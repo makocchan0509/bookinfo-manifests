@@ -10,10 +10,6 @@ spec:
         backend:
           serviceName: productpage
           servicePort: 9080
-      - path: /static/*
-        backend:
-          serviceName: productpage
-          servicePort: 9080
       - path: /login
         backend:
           serviceName: productpage
@@ -22,7 +18,13 @@ spec:
         backend:
           serviceName: productpage
           servicePort: 9080
-      - path: /api/v1/products.*
+      - path: /static/*
+        pathType: Prefix        
+        #    pathType: Prefix
         backend:
           serviceName: productpage
           servicePort: 9080
+      - backend:
+          serviceName: productpage
+          servicePort: 9080
+        path: /api/v1/products.*
