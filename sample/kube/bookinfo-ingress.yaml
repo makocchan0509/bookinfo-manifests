@@ -9,8 +9,7 @@ metadata:
     service: productpage
 spec:
   rules:    
-  - host: bookinfo.apps.cluster-ef73.ef73.example.opentlc.com
-    http:
+  - http:
       paths:
       - path: /productpage
         pathType: Prefix

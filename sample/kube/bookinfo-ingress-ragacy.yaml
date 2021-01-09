@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: bookinfo
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /productpage
+        backend:
+          serviceName: productpage
+          servicePort: 9080
+      - path: /static/*
+        backend:
+          serviceName: productpage
+          servicePort: 9080
+      - path: /login
+        backend:
+          serviceName: productpage
+          servicePort: 9080
+      - path: /logout
+        backend:
+          serviceName: productpage
+          servicePort: 9080
+      - path: /api/v1/products.*
+        backend:
+          serviceName: productpage
+          servicePort: 9080
