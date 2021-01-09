@@ -1,4 +1,4 @@
 # Bookinfo
 
 Bookinfo Sample
-See https://istio.io/docs/examples/bookinfo/
+See https://github.com/istio/istio/tree/master/samples/bookinfo
