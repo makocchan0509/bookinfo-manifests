@@ -1,48 +1,49 @@
-# Copyright Istio Authors
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
-
-###########################################################################
-# Ingress resource (gateway)
-##########################################################################
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: gateway
+  name: bookinfo-gateway
   annotations:
     kubernetes.io/ingress.class: "istio"
+  labels:
+    app: productpage
+    service: productpage
 spec:
-  rules:
-  - http:
+  rules:    
+  - host: bookinfo.apps.cluster-ef73.ef73.example.opentlc.com
+    http:
       paths:
       - path: /productpage
+        pathType: Prefix
         backend:
-          serviceName: productpage
-          servicePort: 9080
-      - path: /static/*
-        backend:
-          serviceName: productpage
-          servicePort: 9080
+          service:
+            name: productpage
+            port:
+              number: 9080
       - path: /login
+        pathType: Prefix
         backend:
-          serviceName: productpage
-          servicePort: 9080
+          service:
+            name: productpage
+            port:
+              number: 9080
       - path: /logout
+        pathType: Prefix
         backend:
-          serviceName: productpage
-          servicePort: 9080
+          service:
+            name: productpage
+            port:
+              number: 9080
+      - path: /static
+        pathType: Prefix
+        backend:
+          service:
+            name: productpage
+            port:
+              number: 9080
       - path: /api/v1/products.*
+        pathType: Prefix
         backend:
-          serviceName: productpage
-          servicePort: 9080
----
+          service:
+            name: productpage
+            port:
+              number: 9080
