@@ -1,0 +1,11 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: bookinfo-source
+spec:
+  type: git
+  params:
+    - name: url
+      value: https://gitlab.com/cloudnative_impress/bookinfo-manifests.git
+    - name: revision
+      value: master
