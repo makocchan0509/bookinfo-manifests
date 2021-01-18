@@ -6,6 +6,6 @@ spec:
   type: git
   params:
     - name: url
-      value: https://gitlab.com/cloudnative_impress/bookinfo-manifests.git
+      value: https://gitlab.com/cloudnative_impress/bookinfo.git
     - name: revision
       value: master

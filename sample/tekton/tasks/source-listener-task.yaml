@@ -13,6 +13,5 @@ spec:
         type: git
   steps:
     - name: ls-build-sources
-#      image: busybox
       image: registry.access.redhat.com/ubi8/ubi
       command: ["ls", "-ltr", "/workspace/source/$(inputs.params.contextDir)"]
