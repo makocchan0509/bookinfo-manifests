@@ -19,5 +19,5 @@ spec:
       args: ["build"]
     - name: ls-archive
       image: busybox
-      command:
-        ["ls", "-ltr", "/workspace/source/$(inputs.params.contextDir)/build/libs"]
+      command: ["ls"]
+      args: ["-ltr", "/workspace/source/$(inputs.params.contextDir)/build/libs"]
