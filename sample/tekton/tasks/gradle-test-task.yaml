@@ -1,0 +1,23 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: gradle-test
+spec:
+  resources:
+    inputs:
+      - name: source
+        type: git
+  params:
+    - name: contextDir
+      description: "The context directory within the repository for sources"
+      default: reviews/reviews-application
+  steps:
+    - name: gradle-build
+      image: gradle:jdk8
+      workingDir: "/workspace/source/$(inputs.params.contextDir)"
+      command: ["gradle"]
+      args: ["test","-i"]
+    - name: ls-archive
+      image: busybox
+      command: ["ls"]
+      args: ["-ltr", "/workspace/source/$(inputs.params.contextDir)/build/reports/tests/test"]
