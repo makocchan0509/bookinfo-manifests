@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: workspaces-sample
+spec:
+  workspaces:
+    - name: pvc-workspace1
+    - name: pvc-workspace2
+      readOnly: true
+    - name: emptydir-workspace
+    - name: cm-workspace
+  steps:
+    - name: ls-workspaces
+      image: busybox:stable
+      command: ["ls"]
+      args: ["-ltrR", "/workspace"]
