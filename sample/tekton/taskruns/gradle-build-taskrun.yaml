@@ -5,11 +5,10 @@ metadata:
 spec:
   taskRef:
     name: gradle-build
-  resources:
-    inputs:
-      - name: source
-        resourceRef:
-          name: bookinfo-source
+  workspaces:
+    - name: output
+      persistentVolumeClaim:
+        claimName: tekton-pvc
   params:
     - name: contextDir
       value: reviews/reviews-application

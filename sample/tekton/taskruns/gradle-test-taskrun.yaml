@@ -9,11 +9,6 @@ spec:
     - name: output
       persistentVolumeClaim:
         claimName: tekton-pvc
-#  resources:
-#    inputs:
-#      - name: source
-#        resourceRef:
-#          name: bookinfo-source
   params:
     - name: contextDir
       value: reviews/reviews-application

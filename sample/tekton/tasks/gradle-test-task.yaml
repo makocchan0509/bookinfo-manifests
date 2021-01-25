@@ -3,13 +3,6 @@ kind: Task
 metadata:
   name: gradle-test
 spec:
-#  resources:
-#    inputs:
-#      - name: source
-#        type: git
-#    outputs:
-#      - name: source
-#        type: git
   workspaces:
     - name: output
   params:

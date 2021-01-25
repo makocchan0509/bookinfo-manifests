@@ -3,10 +3,8 @@ kind: Task
 metadata:
   name: gradle-build
 spec:
-  resources:
-    inputs:
-      - name: source
-        type: git
+  workspaces:
+    - name: output
   params:
     - name: contextDir
       description: "The context directory within the repository for sources"
@@ -14,10 +12,10 @@ spec:
   steps:
     - name: gradle-build
       image: gradle:jdk8
-      workingDir: "/workspace/source/$(inputs.params.contextDir)"
+      workingDir: "/workspace/output/$(inputs.params.contextDir)"
       command: ["gradle"]
       args: ["build"]
     - name: ls-archive
       image: busybox
       command: ["ls"]
-      args: ["-ltr", "/workspace/source/$(inputs.params.contextDir)/build/libs"]
+      args: ["-ltr", "/workspace/output/$(inputs.params.contextDir)/build/libs"]
