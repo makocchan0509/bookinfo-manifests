@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: git-clone-run-
+spec:
+  taskRef:
+    name: git-clone
+  workspaces:
+    - name: output
+      persistentVolumeClaim:
+        claimName: tekton-pvc
+  params:
+    - name: url
+      value: https://gitlab.com/cloudnative_impress/bookinfo.git
+    - name: revision
+      value: master

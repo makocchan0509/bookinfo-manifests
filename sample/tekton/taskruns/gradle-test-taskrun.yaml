@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: gradle-test-run-
+spec:
+  taskRef:
+    name: gradle-test
+  workspaces:
+    - name: output
+      persistentVolumeClaim:
+        claimName: tekton-pvc
+#  resources:
+#    inputs:
+#      - name: source
+#        resourceRef:
+#          name: bookinfo-source
+  params:
+    - name: contextDir
+      value: reviews/reviews-application

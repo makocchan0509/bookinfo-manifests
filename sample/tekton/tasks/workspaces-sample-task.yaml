@@ -14,3 +14,14 @@ spec:
       image: busybox:stable
       command: ["ls"]
       args: ["-ltrR", "/workspace"]
+    - name: write-to-emptydir
+      image: busybox:stable
+      script: echo "Sample Workspaces - VolumeSource emptyDir" > $(workspaces.emptydir-workspace.path)/message
+    - name: read-emptydir
+      image: busybox:stable
+      command: ["cat"]
+      args: ["$(workspaces.emptydir-workspace.path)/message"]
+    - name: show-configmap
+      image: busybox:stable
+      command: ["cat"]
+      args: ["/workspace/cm-workspace/workspace-message.txt"]

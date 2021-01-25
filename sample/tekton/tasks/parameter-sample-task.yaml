@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: parameter-sample
+spec:
+  params:
+    - name: contextDir
+      description: "The context directory within the repository for sources"
+      default: reviews/reviews-application
+  steps:
+    - name: sleep-timeout
+      image: ubuntu:21.04
+      script: | 
+        #!/usr/bin/env bash
+        echo "I am supposed to sleep for 60 seconds!"
+        sleep 60
+      timeout: 5s
+    - name: ls-build-sources
+      image: busybox:stable
+      command: ["ls"]
+      args: ["-ltr", "/tekton"]
