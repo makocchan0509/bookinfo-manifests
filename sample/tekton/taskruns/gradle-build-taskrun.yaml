@@ -8,7 +8,7 @@ spec:
   workspaces:
     - name: output
       persistentVolumeClaim:
-        claimName: tekton-pvc
+        claimName: bookinfo
   params:
     - name: contextDir
       value: reviews/reviews-application

@@ -8,7 +8,7 @@ spec:
   workspaces:
     - name: output
       persistentVolumeClaim:
-        claimName: tekton-pvc
+        claimName: bookinfo
   params:
     - name: url
       value: https://gitlab.com/cloudnative_impress/bookinfo.git
