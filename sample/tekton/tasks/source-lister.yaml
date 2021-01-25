@@ -10,7 +10,7 @@ spec:
       description: "The context directory within the repository for sources"
       default: reviews
   steps:
-    - name: ls-build-sources
+    - name: ls-sources
       image: busybox:stable
       command: ["ls"]
       args: ["-ltr", "/workspace/output/$(inputs.params.contextDir)"]
