@@ -1,0 +1,31 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: show-workspaces
+spec:
+  workspaces:
+    - name: workspace-pvc1
+      description: Mount PersistentVolumeClaim for volumeClaimTemplate
+    - name: workspace-pvc2
+      readOnly: true
+      description: Mount PersistentVolumeClaim(bookinfo)
+    - name: workspace-emptyDir
+      description: Mount emptyDir
+    - name: workspace-configmap
+      description: Mount ConfigMap
+  steps:
+    - name: ls-workspaces
+      image: busybox:stable
+      command: ["ls"]
+      args: ["-ltrR", "/workspace"]
+    - name: write-to-emptydir
+      image: busybox:stable
+      script: echo "Sample Workspaces - VolumeSource emptyDir" > $(workspaces.workspace-emptyDir.path)/message
+    - name: read-emptydir
+      image: busybox:stable
+      command: ["cat"]
+      args: ["$(workspaces.workspace-emptyDir.path)/message"]
+    - name: show-configmap
+      image: busybox:stable
+      command: ["cat"]
+      args: ["$(workspaces.workspace-configmap.path)/workspace-message.txt"]

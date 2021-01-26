@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: timeout
+  name: step-timeout
 spec:
   steps:
     - name: sleep-timeout

@@ -1,12 +1,12 @@
 apiVersion: tekton.dev/v1beta1
 kind: TaskRun
 metadata:
-  generateName: workspaces-sample-run-
+  generateName: show-workspaces-run-
 spec:
   taskRef:
-    name: workspaces-sample
+    name: show-workspaces
   workspaces:
-    - name: pvc-workspace1
+    - name: workspace-pvc1
       volumeClaimTemplate:
         spec:
           accessModes: 
@@ -14,15 +14,15 @@ spec:
           resources:
             requests:
               storage: 500Mi
-    - name: pvc-workspace2
+    - name: workspace-pvc2
       persistentVolumeClaim:
-        claimName: tekton-pvc
-      subPath: sample
-    - name: emptydir-workspace
+        claimName: bookinfo
+      subPath: reviews
+    - name: workspace-emptyDir
       emptyDir: {}
-    - name: cm-workspace
+    - name: workspace-configmap
       configMap:
-        name: tekton-cm
+        name: workspaces-configmap
         items:
           - key: message
             path: workspace-message.txt
