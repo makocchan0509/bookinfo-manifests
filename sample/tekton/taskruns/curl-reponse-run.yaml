@@ -1,0 +1,10 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: curl-response-run
+spec:
+  params:
+    - name: url
+      value: "www.google.com"
+  taskRef:
+    name: curl
