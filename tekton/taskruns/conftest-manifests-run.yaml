@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: TaskRun
 metadata:
-  name: conftest-manifests
+  generateName: conftest-manifests-run-
 spec:
   taskRef:
     name: conftest
@@ -13,4 +13,4 @@ spec:
   - name: files
     value: deploy/bases/bookinfo-reviews.yaml
   - name: policy
-    value: deploy/bases/policy
+    value: deploy/policy
