@@ -6,5 +6,7 @@ spec:
   params:
     - name: url
       value: "www.google.com"
+    - name: options
+      value: ["-I","--no-progress-meter"]
   taskRef:
     name: curl

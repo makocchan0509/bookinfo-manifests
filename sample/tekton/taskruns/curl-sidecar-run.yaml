@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: curl-sidecar-run
+spec:
+  params:
+    - name: url
+      value: "http://localhost:9080/reviews/0"
+    - name: options
+      value: ["--no-progress-meter"]
+  taskRef:
+    name: curl-sidecar
