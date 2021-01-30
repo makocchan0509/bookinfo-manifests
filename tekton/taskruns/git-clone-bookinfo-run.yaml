@@ -1,8 +1,9 @@
 apiVersion: tekton.dev/v1beta1
 kind: TaskRun
 metadata:
-  generateName: git-clone-run-
+  generateName: git-clone-bookinfo-run-
 spec:
+  serviceAccountName: tekton-admin
   taskRef:
     name: git-clone
   workspaces:
