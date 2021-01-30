@@ -16,6 +16,6 @@ spec:
       command: ["gradle"]
       args: ["build"]
     - name: ls-archive
-      image: busybox
+      image: busybox:stable
       command: ["ls"]
       args: ["-ltr", "/workspace/output/$(inputs.params.contextDir)/build/libs"]

@@ -23,6 +23,17 @@ spec:
     description: option of curl image
     type: string
     default: "docker.io/curlimages/curl:7.72.0@sha256:3c3ff0c379abb1150bb586c7d55848ed4dcde4a6486b6f37d6815aed569332fe" #tag: 7.72.0
+  steps:
+  - name: sleep-timeout
+    image: ubuntu:21.04
+    script: |
+      #!/usr/bin/env bash
+      echo "Wait for running sidecar in 10 seconds!"
+      sleep 10
+  - name: curl
+    image: "$(params.curl-image)"
+    command: [curl]
+    args: ["$(params.options[*])", "$(params.url)"]
   sidecars:
   - name: reviews
     image: docker.io/istio/examples-bookinfo-reviews-v2:1.16.2
@@ -42,14 +53,3 @@ spec:
     emptyDir: {}
   - name: tmp
     emptyDir: {} 
-  steps:
-  - name: sleep-timeout
-    image: ubuntu:21.04
-    script: |
-      #!/usr/bin/env bash
-      echo "Wait running sidecar in 10 seconds!"
-      sleep 10
-  - name: curl
-    image: "$(params.curl-image)"
-    command: [curl]
-    args: ["$(params.options[*])", "$(params.url)"]
