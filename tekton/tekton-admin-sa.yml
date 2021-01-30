@@ -3,4 +3,4 @@ kind: ServiceAccount
 metadata:
   name: tekton-admin
 secrets:
-  - name: gitlab-token-git
+  - name: gitlab-token

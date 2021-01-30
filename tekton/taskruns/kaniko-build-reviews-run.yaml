@@ -1,0 +1,18 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: kaniko-build-reviews-run-
+spec:
+  serviceAccountName: tekton-admin 
+  taskRef:
+    name: kaniko
+  params:
+    - name: IMAGE
+      value: registry.gitlab.com/cloudnative_impress/bookinfo/reviews
+    - name: CONTEXT
+      value: ./reviews-wlpcfg
+  workspaces:
+  - name: source
+    persistentVolumeClaim:
+      claimName: bookinfo
+    subPath: reviews
