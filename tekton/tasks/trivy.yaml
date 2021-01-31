@@ -1,0 +1,63 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: trivy-scanning
+  labels:
+    # app.kubernetes.io/version: "0.1"
+  annotations:
+    #  tekton.dev/pipelines.minVersion: "0.17.0"
+    #  tekton.dev/tags: image-scan
+spec:
+  description: >-
+    A Simple and Comprehensive Vulnerability Scanner for Containers
+    and other Artifacts, Suitable for CI.
+  params:
+  - name: IMAGE
+    description: Reference of the image Trivy will scan.
+  - name: TRIVY_IMAGE
+    description: The location of the Trivy scan image.
+    default: aquasec/trivy:0.15.0
+  - name: REGISTRY_USERNAME
+    description: Username for private registry.
+    default: ""
+  - name: REGISTRY_PASSWORD
+    description: Password for private registry.
+    default: ""
+  workspaces:
+  - name: cache
+  - name: report
+    readOnly: false
+  stepTemplate:
+    env:
+      - name: TRIVY_USERNAME
+        value: $(params.REGISTRY_USERNAME)
+      - name: TRIVY_PASSWORD
+        value: $(params.REGISTRY_PASSWORD)
+  steps:
+  - name: build-report
+    image: $(params.TRIVY_IMAGE)
+    command: 
+      - trivy
+      - --cache-dir=$(workspaces.cache.path)/trivy
+      - image
+      - --exit-code=0
+      - --no-progress
+      - --severity=HIGH
+      - -o=./container-scanning-report.json
+      - $(params.IMAGE)
+  - name: get-report
+    image: busybox:stable
+    script: |
+      mv -v container-scanning-report.json $(workspaces.report.path)/$(context.taskRun.name)-scanning-report.json
+      cat $(workspaces.report.path)/$(context.taskRun.name)-scanning-report.json
+  - name: severe-vulnerabilities
+    image: $(params.TRIVY_IMAGE)
+    command:
+      - trivy
+      - --cache-dir=$(workspaces.cache.path)/trivy
+      - image
+      - --exit-code=1
+      - --no-progress
+      - --severity=CRITICAL
+      - $(params.IMAGE)

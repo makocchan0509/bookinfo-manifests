@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: trivy-scanning-run-
+spec:
+  serviceAccountName: tekton-admin
+  taskRef:
+    name: trivy-scanning
+  params:
+    - name: IMAGE
+      value: registry.gitlab.com/cloudnative_impress/bookinfo/reviews:latest
+    - name: REGISTRY_USERNAME
+      value: shkitayama
+    - name: REGISTRY_PASSWORD
+      value: vaDTDMb7ig1ES9vxA5x7
+  workspaces:
+    - name: cache
+      emptyDir: {}
+    - name: report
+      persistentVolumeClaim:
+        claimName: container-scan-reports

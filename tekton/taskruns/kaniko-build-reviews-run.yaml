@@ -8,9 +8,12 @@ spec:
     name: kaniko
   params:
     - name: IMAGE
-      value: registry.gitlab.com/cloudnative_impress/bookinfo/reviews
+      value: registry.gitlab.com/cloudnative_impress/bookinfo/reviews:$(context.taskRun.name)
     - name: CONTEXT
       value: ./reviews-wlpcfg
+    - name: BUILDER_IMAGE
+      ##  description: kaniko v1.3.0
+      value: gcr.io/kaniko-project/executor@sha256:b9eec410fa32cd77cdb7685c70f86a96debb8b087e77e63d7fe37eaadb178709
   workspaces:
   - name: source
     persistentVolumeClaim:
