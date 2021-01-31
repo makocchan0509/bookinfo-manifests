@@ -5,7 +5,7 @@ metadata:
 spec:
   serviceAccountName: tekton-admin
   taskRef:
-    name: trivy-scanning
+    name: trivy
   params:
     - name: IMAGE
       value: registry.gitlab.com/cloudnative_impress/bookinfo/reviews:latest

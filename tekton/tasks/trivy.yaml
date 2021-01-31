@@ -2,12 +2,12 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: trivy-scanning
+  name: trivy
   labels:
-    # app.kubernetes.io/version: "0.1"
+    app.kubernetes.io/version: "0.1"
   annotations:
-    #  tekton.dev/pipelines.minVersion: "0.17.0"
-    #  tekton.dev/tags: image-scan
+    tekton.dev/pipelines.minVersion: "0.17.0"
+    tekton.dev/tags: security
 spec:
   description: >-
     A Simple and Comprehensive Vulnerability Scanner for Containers
