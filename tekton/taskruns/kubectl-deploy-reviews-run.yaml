@@ -10,11 +10,14 @@ spec:
       persistentVolumeClaim:
         claimName: bookinfo-manifests
       subPath: deploy/bases
+    - name: kubeconfig-dir
+      secret:
+        secretName: tekton-admin-kubeconfig
   params:
     - name: script
       value: |
         kubectl apply -f $(workspaces.manifest-dir.path)/bookinfo.yaml
-        ----------
+        echo "----------"
         kubectl apply -f $(workspaces.manifest-dir.path)/bookinfo-reviews.yaml
-        ----------
+        echo "----------"
         kubectl get deployment,service

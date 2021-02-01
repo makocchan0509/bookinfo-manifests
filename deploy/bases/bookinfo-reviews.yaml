@@ -22,7 +22,7 @@ metadata:
   labels:
     app.kubernetes.io/name: reviews
     app.kubernetes.io/instance: bookinfo-reviews
-    app.kubernetes.io/version: "2.0"
+    app.kubernetes.io/version: v2
     app.kubernetes.io/component: reviews
     app.kubernetes.io/part-of: bookinfo
     app.kubernetes.io/managed-by: kustomize
@@ -32,7 +32,6 @@ spec:
     matchLabels:
       app: reviews
       version: v2
-      release: release-v2
   template:
     metadata:
       labels:
