@@ -1,0 +1,20 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: kubectl-deploy-reviews-run-
+spec:
+  taskRef:
+    name: kubernetes-actions
+  workspaces:
+    - name: manifest-dir
+      persistentVolumeClaim:
+        claimName: bookinfo-manifests
+      subPath: deploy/bases
+  params:
+    - name: script
+      value: |
+        kubectl apply -f $(workspaces.manifest-dir.path)/bookinfo.yaml
+        ----------
+        kubectl apply -f $(workspaces.manifest-dir.path)/bookinfo-reviews.yaml
+        ----------
+        kubectl get deployment,service

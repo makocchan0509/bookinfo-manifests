@@ -3,7 +3,7 @@ kind: ServiceAccount
 metadata:
   name: tekton-admin
 secrets:
-  - name: gitlab-token-git
+  - name: gitlab-token
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
