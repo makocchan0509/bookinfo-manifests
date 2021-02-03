@@ -11,6 +11,8 @@ spec:
       claimName: bookinfo-manifests
   params:
   - name: files
-    value: deploy/bases/bookinfo-reviews.yaml
+    value: $(workspaces.source.path)/deploy/bases/bookinfo-reviews.yaml
   - name: policy
-    value: deploy/policy
+    value: $(workspaces.source.path)/deploy/policy
+  - name: args
+    value: ["--trace"]

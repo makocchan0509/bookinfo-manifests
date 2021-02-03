@@ -5,6 +5,8 @@ metadata:
 spec:
   serviceAccountName: tekton-admin
   params:
+  - name: target-app
+    value: reviews
   - name: bookinfo-url
     value: https://gitlab.com/cloudnative_impress/bookinfo.git
   - name: bookinfo-revision
