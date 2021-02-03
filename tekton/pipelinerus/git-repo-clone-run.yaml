@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: git-repo-clone-run-
+spec:
+  serviceAccountName: tekton-admin
+  params:
+  - name: bookinfo-url
+    value: https://gitlab.com/cloudnative_impress/bookinfo.git
+  - name: bookinfo-revision
+    value: master
+  - name: bookinfo-manifests-url
+    value: https://gitlab.com/cloudnative_impress/bookinfo-manifests.git
+  - name: bookinfo-manifests-revision
+    value: master
+  workspaces:
+  - name: bookinfo
+    persistentVolumeClaim:
+      claimName: bookinfo
+  - name: bookinfo-manifests
+    persistentVolumeClaim:
+      claimName: bookinfo-manifests
+  pipelineRef:
+    name: git-repo-clone

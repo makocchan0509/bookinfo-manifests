@@ -10,8 +10,8 @@ metadata:
     tekton.dev/tags: security
 spec:
   description: >-
-    A Simple and Comprehensive Vulnerability Scanner for Containers
-    and other Artifacts, Suitable for CI.
+    This Task scans Comprehensive Vulnerability using Trivy for Containers
+    and other Artifacts, Suitable in CI.
   params:
   - name: IMAGE
     description: Reference of the image Trivy will scan.

@@ -1,0 +1,43 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: git-repo-clone
+spec:
+  workspaces:
+  - name: bookinfo
+    description: Git Repo for BookInfo Apps
+  - name: bookinfo-manifests
+    description: Git Repo for BookInfo Manifests
+  params:
+  - name: bookinfo-url
+    description: Git Repo URL for BookInfo Apps
+  - name: bookinfo-revision  
+    description: Git Repo Revision for BookInfo Apps
+  - name: bookinfo-manifests-url
+    description: Git Repo URL for BookInfo Manifests
+  - name: bookinfo-manifests-revision  
+    description: Git Repo Revision for BookInfo Manifests
+  tasks:
+  - name: git-clone-bookinfo
+    taskRef:
+      name: git-clone
+    params:
+    - name: url
+      value: $(params.bookinfo-url)
+    - name: revision
+      value: $(params.bookinfo-revision)
+    workspaces:
+    - name: output
+      workspace: bookinfo
+      
+  - name: git-clone-bookinfo-manifests
+    taskRef:
+      name: git-clone
+    params:
+    - name: url
+      value: $(params.bookinfo-manifests-url)
+    - name: revision
+      value: $(params.bookinfo-manifests-revision)
+    workspaces:
+    - name: output
+      workspace: bookinfo-manifests
