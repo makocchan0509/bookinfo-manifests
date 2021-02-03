@@ -16,8 +16,13 @@ spec:
   params:
     - name: script
       value: |
+        echo "--- CHECK KUBECONFIG ---"
+        ls -la $(workspaces.kubeconfig-dir.path)
+        echo "--- DEPLOY BOOKINFO APPS WITHOUT REVIEWS ---"
+        kubectl delete -f $(workspaces.manifest-dir.path)/bookinfo.yaml
         kubectl apply -f $(workspaces.manifest-dir.path)/bookinfo.yaml
-        echo "----------"
+        echo "--- DEPLOY REVIEWS APP ---"
+        kubectl delete -f $(workspaces.manifest-dir.path)/bookinfo-reviews.yaml
         kubectl apply -f $(workspaces.manifest-dir.path)/bookinfo-reviews.yaml
-        echo "----------"
+        echo "--- SHOW DEPLOYMENTS AND SERVECES ---"
         kubectl get deployment,service

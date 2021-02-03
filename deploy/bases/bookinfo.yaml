@@ -76,8 +76,6 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
-        securityContext:
-          runAsUser: 1000
 ---
 ##################################################################################################
 # Ratings service
@@ -129,8 +127,6 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
-        securityContext:
-          runAsUser: 1000
 ---
 ##################################################################################################
 # Reviews service
@@ -209,8 +205,6 @@ spec:
         volumeMounts:
         - name: tmp
           mountPath: /tmp
-        securityContext:
-          runAsUser: 1000
       volumes:
       - name: tmp
         emptyDir: {}
