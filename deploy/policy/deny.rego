@@ -13,7 +13,7 @@ deny[msg] {
 
 required_deployment_selectors {
   input.spec.selector.matchLabels.app
-  input.spec.selector.matchLabels.release
+  input.spec.selector.matchLabels.version
 }
 
 deny[msg] {

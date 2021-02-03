@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  generateName: reviews-build-deploy-run-
+  generateName: build-deploy-reviews-run-
 spec:
   serviceAccountName: tekton-admin
   params:
@@ -21,4 +21,4 @@ spec:
     persistentVolumeClaim:
       claimName: bookinfo-manifests
   pipelineRef:
-    name: reviews-build-deploy
+    name: build-deploy-reviews

@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: reviews-build-deploy
+  name: build-deploy-reviews
 spec:
   workspaces:
   - name: bookinfo
@@ -41,3 +41,26 @@ spec:
     workspaces:
     - name: output
       workspace: bookinfo-manifests
+
+  - name: gradle-test-reviews
+    taskRef:
+      name: gradle-test
+    runAfter:
+    - git-clone-bookinfo
+    workspaces:
+    - name: output
+      workspace: bookinfo
+
+  - name: conftest-reviews
+    taskRef:
+      name: conftest
+    runAfter:
+    - git-clone-bookinfo-manifests
+    workspaces:
+    - name: output
+      workspace: bookinfo-manifests
+    params:
+    - name: files
+      value: deploy/bases/bookinfo-reviews.yaml
+    - name: policy
+      value: deploy/policy

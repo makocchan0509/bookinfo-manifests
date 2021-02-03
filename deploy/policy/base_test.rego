@@ -34,7 +34,7 @@ test_deployment_with_security_context {
       "selector": {
         "matchLabels": {
           "app": "app",
-          "release": "release"
+          "version": "version"
         }
       },
       "template": {
