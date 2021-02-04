@@ -1,0 +1,17 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: git-clone-bookinfo-manifests-run-
+spec:
+  serviceAccountName: tekton-admin
+  taskRef:
+    name: git-clone
+  workspaces:
+    - name: output
+      persistentVolumeClaim:
+        claimName: bookinfo-manifests
+  params:
+    - name: url
+      value: https://gitlab.com/cloudnative_impress/bookinfo-manifests.git
+    - name: revision
+      value: master

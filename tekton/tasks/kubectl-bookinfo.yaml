@@ -1,13 +1,12 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: kubernetes-actions
+  name: kubectl-bookinfo
   labels:
     app.kubernetes.io/version: "0.2"
   annotations:
     tekton.dev/pipelines.minVersion: "0.17.0"
     tekton.dev/tags: CLI, kubectl
-    tekton.dev/displayName: "kubernetes actions"
 spec:
   description: >-
     This task is the generic kubectl CLI task which can be used
@@ -21,15 +20,6 @@ spec:
     - name: output-result
       description: some result can be emitted if someone wants to.
   params:
-    - name: script
-      description: The Kubernetes CLI script to run
-      type: string
-      default: "kubectl $@"
-    - name: args
-      description: The Kubernetes CLI arguments to run
-      type: array
-      default:
-        - "help"
     - name: kubectl_image
       ## default: gcr.io/cloud-bui.ders/kubectl@sha256:8ab94be8b2b4f3d117f02d868b39540fddd225447abf4014f7ba4765cb39f753 #image is huge
       ## Image 2021/02/04
@@ -51,14 +41,25 @@ spec:
         #!/usr/bin/env bash
 
         [[ "$(workspaces.manifest-dir.bound)" == "true" ]] && \
-        cd $(workspaces.manifest-dir.path)
+        cd $(workspaces.manifest-dir.path);
 
         [[ "$(workspaces.kubeconfig-dir.bound)" == "true" ]] && \
         [[ -f $(workspaces.kubeconfig-dir.path)/kubeconfig ]] && \
-        export KUBECONFIG=$(workspaces.kubeconfig-dir.path)/kubeconfig
+        export KUBECONFIG=$(workspaces.kubeconfig-dir.path)/kubeconfig;
 
-        $(params.script)
+        echo "--- CHECK KUBECONFIG ---";
+        ls -la $(workspaces.kubeconfig-dir.path);
+        ls -la $(workspaces.manifest-dir.path);
 
-      args:
-        - "$(params.args)"
+        echo "--- DEPLOY BOOKINFO APPS WITHOUT REVIEWS ---";
+        kubectl apply -f ./deploy/bases/bookinfo.yaml;
 
+        echo "--- DEPLOY REVIEWS APP ---";
+        kubectl delete -f ./deploy/bases/bookinfo-$(params.target_app).yaml;
+        sed -e "s;___IMAGE_URL___;${IMAGE_URL};g" \
+          -e "s;___IMAGE_DIGEST___;${IMAGE_DIGEST};g" \
+          ./deploy/bases/bookinfo-$(params.target_app).yaml | kubectl apply -f - ;
+
+        echo "--- SHOW DEPLOYMENTS AND SERVECES ---";
+        kubectl get deployment,service;
+ 

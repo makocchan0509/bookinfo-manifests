@@ -4,36 +4,35 @@ metadata:
   generateName: kubectl-deploy-reviews-run-
 spec:
   taskRef:
-    name: kubernetes-actions
+    name: kubectl-bookinfo
   workspaces:
     - name: manifest-dir
       persistentVolumeClaim:
         claimName: bookinfo-manifests
-      subPath: deploy/bases
     - name: kubeconfig-dir
       secret:
         secretName: tekton-admin-kubeconfig
-  params:
-    - name: script
-      value: |
-        echo "--- CHECK KUBECONFIG ---"
-        ls -la $(workspaces.kubeconfig-dir.path)
-        echo $("params.imagedigest")
-        echo $(workspaces.kubeconfig-dir.path)
-
-        echo "--- CHANGE TARGET DEPLOYMENT ---"
-        sed -ie "s;___IMAGE_URL___;$(params.imageurl);g" \
-            $(workspaces.manifest-dir.path)/deploy/bases/bookinfo-$(params.target_app).yaml
-        sed -ie "s;___IMAGE_DIGEST___;$(params.imagedigest);g" \
-            $(workspaces.manifest-dir.path)/deploy/bases/bookinfo-$(params.target_app).yaml
-            
-        echo "--- DEPLOY BOOKINFO APPS WITHOUT REVIEWS ---"
-        kubectl delete -f $(workspaces.manifest-dir.path)/deploy/bases/bookinfo.yaml
-        kubectl apply -f $(workspaces.manifest-dir.path)/deploy/bases/bookinfo.yaml
-
-        echo "--- DEPLOY REVIEWS APP ---"
-        kubectl delete -f $(workspaces.manifest-dir.path)/deploy/bases/bookinfo-$(params.target_app).yaml
-        kubectl apply -f $(workspaces.manifest-dir.path)/deploy/bases/bookinfo-$(params.target_app).yaml
-
-        echo "--- SHOW DEPLOYMENTS AND SERVECES ---"
-        kubectl get deployment,service
+#  params:
+#    - name: script
+#      value: |
+#        echo "--- CHECK KUBECONFIG ---"
+#        ls -la $(workspaces.kubeconfig-dir.path)
+#        echo $("params.imagedigest")
+#        echo $(workspaces.kubeconfig-dir.path)
+#
+#        echo "--- CHANGE TARGET DEPLOYMENT ---"
+#        sed -ie "s;___IMAGE_URL___;$(params.imageurl);g" \
+#            $(workspaces.manifest-dir.path)/deploy/bases/bookinfo-$(params.target_app).yaml
+#        sed -ie "s;___IMAGE_DIGEST___;$(params.imagedigest);g" \
+#            $(workspaces.manifest-dir.path)/deploy/bases/bookinfo-$(params.target_app).yaml
+#            
+#        echo "--- DEPLOY BOOKINFO APPS WITHOUT REVIEWS ---"
+#        kubectl delete -f $(workspaces.manifest-dir.path)/deploy/bases/bookinfo.yaml
+#        kubectl apply -f $(workspaces.manifest-dir.path)/deploy/bases/bookinfo.yaml
+#
+#        echo "--- DEPLOY REVIEWS APP ---"
+#        kubectl delete -f $(workspaces.manifest-dir.path)/deploy/bases/bookinfo-$(params.target_app).yaml
+#        kubectl apply -f $(workspaces.manifest-dir.path)/deploy/bases/bookinfo-$(params.target_app).yaml
+#
+#        echo "--- SHOW DEPLOYMENTS AND SERVECES ---"
+#        kubectl get deployment,service
