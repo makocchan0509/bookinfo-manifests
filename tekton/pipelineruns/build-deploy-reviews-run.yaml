@@ -7,6 +7,8 @@ spec:
   params:
   - name: target-app
     value: reviews
+  - name: imageurl
+    value: registry.gitlab.com/cloudnative_impress/bookinfo
   - name: bookinfo-url
     value: https://gitlab.com/cloudnative_impress/bookinfo.git
   - name: bookinfo-revision
@@ -22,5 +24,10 @@ spec:
   - name: bookinfo-manifests
     persistentVolumeClaim:
       claimName: bookinfo-manifests
+  - name: vul-cache
+    emptyDir: {}
+  - name: container-scan-reports
+    persistentVolumeClaim:
+      claimName: container-scan-reports 
   pipelineRef:
     name: build-deploy-reviews

@@ -42,7 +42,7 @@ spec:
   - name: build-report
     image: $(params.TRIVY_IMAGE)
     script: |
-      SCAN_CONTAINER_IMAGE=$(params.IMAGE)@sha256:$(params.IMAGE_DIGEST)
+      SCAN_CONTAINER_IMAGE=$(params.IMAGE)@$(params.IMAGE_DIGEST)
       trivy --cache-dir=$(workspaces.cache.path)/trivy \
         image --exit-code=0 --no-progress --severity=HIGH \
         -o=./container-scanning-report.json ${SCAN_CONTAINER_IMAGE}
@@ -54,7 +54,7 @@ spec:
   - name: severe-vulnerabilities
     image: $(params.TRIVY_IMAGE)
     script: |
-      SCAN_CONTAINER_IMAGE=$(params.IMAGE)@sha256:$(params.IMAGE_DIGEST)
+      SCAN_CONTAINER_IMAGE=$(params.IMAGE)@$(params.IMAGE_DIGEST)
       trivy --cache-dir=$(workspaces.cache.path)/trivy \
         image --exit-code=1 --no-progress --severity=CRITICAL \
         ${SCAN_CONTAINER_IMAGE}

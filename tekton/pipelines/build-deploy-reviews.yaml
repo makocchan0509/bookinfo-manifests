@@ -8,9 +8,15 @@ spec:
     description: Git Repo for BookInfo Apps
   - name: bookinfo-manifests
     description: Git Repo for BookInfo Manifests
+  - name: vul-cache
+    description: Cache vulnerabilities infomations
+  - name: container-scan-reports
+    description: Container Scanning Reports
   params:
   - name: target-app
     description: Target application in BookInfo Apps
+  - name: imageurl
+    description: Target container registry URL
   - name: bookinfo-url
     description: Git Repo URL for BookInfo Apps
   - name: bookinfo-revision  
@@ -44,7 +50,7 @@ spec:
     - name: output
       workspace: bookinfo-manifests
 
-  - name: gradle-test
+  - name: test-application
     taskRef:
       name: gradle-test
     runAfter:
@@ -52,11 +58,8 @@ spec:
     workspaces:
     - name: output
       workspace: bookinfo
-    params:
-    - name: contextDir
-      value: $(params.target-app)/reviews-application
 
-  - name: conftest
+  - name: test-manifests
     taskRef:
       name: conftest
     runAfter:
@@ -76,17 +79,32 @@ spec:
     taskRef:
       name: kaniko
     runAfter:
-    - gradle-test
-    - conftest
+    - test-application
+    - test-manifests
     workspaces:
     - name: source
       workspace: bookinfo
     params:
     - name: IMAGE
-      value: registry.gitlab.com/cloudnative_impress/bookinfo/$(params.target-app):$(context.pipelineRun.name)
+      value: $(params.imageurl)/$(params.target-app):$(context.pipelineRun.name)
     - name: CONTEXT
       value: $(params.target-app)/reviews-wlpcfg
     - name: BUILDER_IMAGE
       ##  description: kaniko v1.3.0
       value: gcr.io/kaniko-project/executor@sha256:b9eec410fa32cd77cdb7685c70f86a96debb8b087e77e63d7fe37eaadb178709
 
+  - name: test-container
+    taskRef:
+      name: trivy
+    runAfter:
+    - build-container
+    workspaces:
+    - name: cache
+      workspace: vul-cache
+    - name: report
+      workspace: container-scan-reports
+    params:
+    - name: IMAGE
+      value: $(params.imageurl)/$(params.target-app)
+    - name: IMAGE_DIGEST
+      value: $(tasks.build-container.results.IMAGE-DIGEST)
