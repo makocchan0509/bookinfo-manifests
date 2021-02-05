@@ -8,11 +8,9 @@ spec:
     name: trivy
   params:
     - name: IMAGE
-      value: registry.gitlab.com/cloudnative_impress/bookinfo/reviews:latest
-    - name: REGISTRY_USERNAME
-      value: shkitayama
-    - name: REGISTRY_PASSWORD
-      value: vaDTDMb7ig1ES9vxA5x7
+      value: registry.gitlab.com/___GIT_USERNAME___/bookinfo/reviews
+    - name: IMAGE_DIGEST
+      value: ___IMAGE_DIGEST___
   workspaces:
     - name: cache
       emptyDir: {}
