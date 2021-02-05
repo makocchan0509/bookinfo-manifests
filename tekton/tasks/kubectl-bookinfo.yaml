@@ -41,23 +41,25 @@ spec:
         #!/usr/bin/env bash
 
         [[ "$(workspaces.manifest-dir.bound)" == "true" ]] && \
-        cd $(workspaces.manifest-dir.path);
+        cd $(workspaces.manifest-dir.path); \
+        ls -la ./
 
         [[ "$(workspaces.kubeconfig-dir.bound)" == "true" ]] && \
         [[ -f $(workspaces.kubeconfig-dir.path)/kubeconfig ]] && \
         export KUBECONFIG=$(workspaces.kubeconfig-dir.path)/kubeconfig;
 
-        echo "--- CHECK KUBECONFIG ---";
-        ls -la $(workspaces.kubeconfig-dir.path);
-        ls -la $(workspaces.manifest-dir.path);
+        echo "--- DEPLOY BOOKINFO APPS WITHOUT $(params.target_app) ---";
+        kubectl apply -f ./deploy/bases/bookinfo-without-$(params.target_app).yaml;
 
-        echo "--- DEPLOY BOOKINFO APPS WITHOUT REVIEWS ---";
-        kubectl apply -f ./deploy/bases/bookinfo.yaml;
-
-        echo "--- DEPLOY REVIEWS APP ---";
+        echo "--- SHOW $(params.target_app) IMAGE ---";
+        sed -ne "s;___IMAGE_URL___;$(params.imageurl);" \
+          -ne "s;___IMAGE_DIGEST___;$(params.imagedigest);p" \
+          ./deploy/bases/bookinfo-$(params.target_app).yaml;
+  
+        echo "--- DEPLOY $(params.target_app) APP ---";
         kubectl delete -f ./deploy/bases/bookinfo-$(params.target_app).yaml;
-        sed -e "s;___IMAGE_URL___;${IMAGE_URL};g" \
-          -e "s;___IMAGE_DIGEST___;${IMAGE_DIGEST};g" \
+        sed -e "s;___IMAGE_URL___;$(params.imageurl);g" \
+          -e "s;___IMAGE_DIGEST___;$(params.imagedigest);g" \
           ./deploy/bases/bookinfo-$(params.target_app).yaml | kubectl apply -f - ;
 
         echo "--- SHOW DEPLOYMENTS AND SERVECES ---";
