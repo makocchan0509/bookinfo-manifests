@@ -8,7 +8,7 @@ spec:
     name: kaniko
   params:
     - name: IMAGE
-      value: registry.gitlab.com/cloudnative_impress/bookinfo/reviews:$(context.taskRun.name)
+      value: registry.gitlab.com/___GIT_USERNAME___/bookinfo/reviews:$(context.taskRun.name)
     - name: CONTEXT
       value: ./reviews-wlpcfg
     - name: BUILDER_IMAGE

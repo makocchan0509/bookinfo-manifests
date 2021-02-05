@@ -11,7 +11,7 @@ spec:
       runAsNonRoot: true
   params:
     - name: IMAGE
-      value: registry.gitlab.com/cloudnative_impress/bookinfo/reviews:$(context.taskRun.uid)
+      value: registry.gitlab.com/___GIT_USERNAME___/bookinfo/reviews:$(context.taskRun.uid)
     - name: CONTEXT
       value: ./reviews-wlpcfg
   workspaces:
