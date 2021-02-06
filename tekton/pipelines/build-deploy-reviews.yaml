@@ -125,6 +125,6 @@ spec:
     - name: TARGET_APP
       value: $(params.target-app)
     - name: IMAGE
-      value: $(params.imageurl)
+      value: $(params.imageurl)/$(params.target-app)
     - name: IMAGE_DIGEST
       value: $(tasks.build-container.results.IMAGE-DIGEST) 
