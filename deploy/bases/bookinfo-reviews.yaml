@@ -59,7 +59,7 @@ spec:
         app: reviews
         version: v2
     spec:
-      serviceAccountName: bookinfo-reviews
+      serviceAccountName: tekton-admin
       containers:
       - name: reviews
         image: ___IMAGE_URL___@___IMAGE_DIGEST___
