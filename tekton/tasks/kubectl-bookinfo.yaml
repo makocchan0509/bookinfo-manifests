@@ -20,23 +20,23 @@ spec:
     - name: output-result
       description: some result can be emitted if someone wants to.
   params:
-    - name: kubectl_image
+    - name: KUBECTL_IMAGE
       ## default: gcr.io/cloud-bui.ders/kubectl@sha256:8ab94be8b2b4f3d117f02d868b39540fddd225447abf4014f7ba4765cb39f753 #image is huge
       ## Image 2021/02/04
       default: gcr.io/cloud-builders/kubectl@sha256:17f354a9d524e48fe2cb656acca9e6ed5e3e4f46c5d160ab058f31c4b47dc2ad
       description: Kubectl wrapper image
-    - name: target_app
+    - name: TARGET_APP
       default: reviews
       description: deploy target application in BookInfo
-    - name: imageurl
+    - name: IMAGE
       default: docker.io/istio/examples-bookinfo-reviews-v2
       description: deployment target image url 
-    - name: imagedigest
-      default: 82497d66ab8cac1ad9506218e4ccc708ec1db59450c6c4c8d645d1b161611a5d
+    - name: IMAGE_DIGEST
+      default: sha256:82497d66ab8cac1ad9506218e4ccc708ec1db59450c6c4c8d645d1b161611a5d
       description: deployment target image digest
   steps:
     - name: kubectl
-      image: $(params.kubectl_image)
+      image: $(params.KUBECTL_IMAGE)
       script: |
         #!/usr/bin/env bash
 
@@ -48,19 +48,19 @@ spec:
         [[ -f $(workspaces.kubeconfig-dir.path)/kubeconfig ]] && \
         export KUBECONFIG=$(workspaces.kubeconfig-dir.path)/kubeconfig;
 
-        echo "--- DEPLOY BOOKINFO APPS WITHOUT $(params.target_app) ---";
-        kubectl apply -f ./deploy/bases/bookinfo-without-$(params.target_app).yaml;
+        echo "--- DEPLOY BOOKINFO APPS WITHOUT $(params.TARGET_APP) ---";
+        kubectl apply -f ./deploy/bases/bookinfo-without-$(params.TARGET_APP).yaml;
 
-        echo "--- SHOW $(params.target_app) IMAGE ---";
-        sed -ne "s;___IMAGE_URL___;$(params.imageurl);" \
-          -ne "s;___IMAGE_DIGEST___;$(params.imagedigest);p" \
-          ./deploy/bases/bookinfo-$(params.target_app).yaml;
+        echo "--- SHOW $(params.TARGET_APP) IMAGE ---";
+        sed -ne "s;___IMAGE_URL___;$(params.IMAGE);" \
+          -ne "s;___IMAGE_DIGEST___;$(params.IMAGE_DIGEST);p" \
+          ./deploy/bases/bookinfo-$(params.TARGET_APP).yaml;
   
-        echo "--- DEPLOY $(params.target_app) APP ---";
-        kubectl delete -f ./deploy/bases/bookinfo-$(params.target_app).yaml;
-        sed -e "s;___IMAGE_URL___;$(params.imageurl);g" \
-          -e "s;___IMAGE_DIGEST___;$(params.imagedigest);g" \
-          ./deploy/bases/bookinfo-$(params.target_app).yaml | kubectl apply -f - ;
+        echo "--- DEPLOY $(params.TARGET_APP) APP ---";
+        kubectl delete -f ./deploy/bases/bookinfo-$(params.TARGET_APP).yaml;
+        sed -e "s;___IMAGE_URL___;$(params.IMAGE);g" \
+          -e "s;___IMAGE_DIGEST___;$(params.IMAGE_DIGEST);g" \
+          ./deploy/bases/bookinfo-$(params.TARGET_APP).yaml | kubectl apply -f - ;
 
         echo "--- SHOW DEPLOYMENTS AND SERVECES ---";
         kubectl get deployment,service;
