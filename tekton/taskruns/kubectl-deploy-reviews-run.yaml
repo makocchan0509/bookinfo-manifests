@@ -3,6 +3,7 @@ kind: TaskRun
 metadata:
   generateName: kubectl-deploy-reviews-run-
 spec:
+  serviceAccountName: tekton-admin
   taskRef:
     name: kubectl-bookinfo
   workspaces:
