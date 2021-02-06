@@ -42,6 +42,8 @@ spec:
       - name: reviews
         image: ___IMAGE_URL___@___IMAGE_DIGEST___
         imagePullPolicy: IfNotPresent
+        imagePullSecrets:
+        - name: tekton-admin-dockercfg
         env:
         - name: LOG_DIR
           value: "/tmp/logs"

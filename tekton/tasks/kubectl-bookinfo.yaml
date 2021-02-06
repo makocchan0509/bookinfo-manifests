@@ -21,10 +21,8 @@ spec:
       description: some result can be emitted if someone wants to.
   params:
     - name: KUBECTL_IMAGE
-      ## default: gcr.io/cloud-bui.ders/kubectl@sha256:8ab94be8b2b4f3d117f02d868b39540fddd225447abf4014f7ba4765cb39f753 #image is huge
-      ## Image 2021/02/04
       default: gcr.io/cloud-builders/kubectl@sha256:17f354a9d524e48fe2cb656acca9e6ed5e3e4f46c5d160ab058f31c4b47dc2ad
-      description: Kubectl wrapper image
+      description: Kubectl wrapper image (IMAGE DATE 2021/02/04)
     - name: TARGET_APP
       default: reviews
       description: deploy target application in BookInfo
@@ -39,10 +37,8 @@ spec:
       image: $(params.KUBECTL_IMAGE)
       script: |
         #!/usr/bin/env bash
-
         [[ "$(workspaces.manifest-dir.bound)" == "true" ]] && \
         cd $(workspaces.manifest-dir.path); \
-        ls -la ./
 
         [[ "$(workspaces.kubeconfig-dir.bound)" == "true" ]] && \
         [[ -f $(workspaces.kubeconfig-dir.path)/kubeconfig ]] && \
@@ -64,4 +60,4 @@ spec:
 
         echo "--- SHOW DEPLOYMENTS AND SERVECES ---";
         kubectl get deployment,service;
- 
+        echo $(results.output-result)

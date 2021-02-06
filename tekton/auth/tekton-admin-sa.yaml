@@ -4,3 +4,4 @@ metadata:
   name: tekton-admin
 secrets:
   - name: gitlab-token
+##  - name: tekton-admin-dockercfg
