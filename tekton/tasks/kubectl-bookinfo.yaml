@@ -60,4 +60,3 @@ spec:
 
         echo "--- SHOW DEPLOYMENTS AND SERVECES ---";
         kubectl get deployment,service;
-        echo $(results.output-result)

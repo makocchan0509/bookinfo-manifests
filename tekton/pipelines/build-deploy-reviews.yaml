@@ -12,6 +12,8 @@ spec:
     description: Cache vulnerabilities infomations
   - name: container-scan-reports
     description: Container Scanning Reports
+  - name: tekton-admin-kubeconfig
+    description: KubeConfig for deploy container
   params:
   - name: target-app
     description: Target application in BookInfo Apps
@@ -108,3 +110,21 @@ spec:
       value: $(params.imageurl)/$(params.target-app)
     - name: IMAGE_DIGEST
       value: $(tasks.build-container.results.IMAGE-DIGEST)
+
+  - name: deploy-container
+    taskRef:
+      name: kubectl-bookinfo
+    runAfter:
+    - test-container
+    workspaces:
+    - name: manifest-dir
+      workspace: bookinfo-manifests
+    - name: kubeconfig-dir
+      workspace: tekton-admin-kubeconfig
+    params:
+    - name: TARGET_APP
+      value: $(params.target-app)
+    - name: IMAGE
+      value: $(params.imageurl)
+    - name: IMAGE_DIGEST
+      value: $(tasks.build-container.results.IMAGE-DIGEST) 

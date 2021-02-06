@@ -29,5 +29,8 @@ spec:
   - name: container-scan-reports
     persistentVolumeClaim:
       claimName: container-scan-reports 
+  - name: tekton-admin-kubeconfig
+    secret:
+      secretName: tekton-admin-kubeconfig
   pipelineRef:
     name: build-deploy-reviews
