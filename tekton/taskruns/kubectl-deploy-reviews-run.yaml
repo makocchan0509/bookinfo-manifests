@@ -17,6 +17,6 @@ spec:
     - name: TARGET_APP
       value: reviews
     - name: IMAGE
-      value: registry.gitlab.com/___GIT_USERNAME___/bookinfo/reviews
+      value: registry.gitlab.com/___GITLAB_USER___/bookinfo/reviews
     - name: IMAGE_DIGEST
       value: ___IMAGE_DIGEST___

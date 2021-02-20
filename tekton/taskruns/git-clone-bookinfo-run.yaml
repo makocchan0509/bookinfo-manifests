@@ -12,6 +12,6 @@ spec:
         claimName: bookinfo
   params:
     - name: url
-      value: https://gitlab.com/___GIT_USERNAME___/bookinfo.git
+      value: https://gitlab.com/___GITLAB_USER___/bookinfo.git
     - name: revision
       value: master
