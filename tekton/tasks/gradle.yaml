@@ -1,24 +1,25 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: gradle-test
+  name: gradle
 spec:
   description: >-
     This Task tests source using Gradle which is an open-source build automation tool.
     Gradle is designed to be flexible enough to build almost any type of software.
   workspaces:
     - name: output
+      description: "Contents processed by Gradle"
   params:
-    - name: contextDir
+    - name: GRADLEOPTS
+      description: "Task applied by built-in and most major Gradle plugins"
+      type: array
+      default: ["tasks"]
+    - name: CONTEXTDIR
       description: "The context directory within the repository for sources"
-      default: reviews/reviews-application
+      default: reviews
   steps:
-    - name: gradle-build
+    - name: gradle-task
       image: gradle:jdk8
-      workingDir: "/workspace/output/$(inputs.params.contextDir)"
+      workingDir: "/workspace/output/$(inputs.params.CONTEXTDIR)"
       command: ["gradle"]
-      args: ["test","-i"]
-    - name: ls-archive
-      image: busybox:stable
-      command: ["ls"]
-      args: ["-ltr", "/workspace/output/$(inputs.params.contextDir)/build/reports/tests/test"]
+      args: ["$(inputs.params.GRADLEOPTS)"]
