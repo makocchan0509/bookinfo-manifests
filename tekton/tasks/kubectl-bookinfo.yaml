@@ -45,18 +45,18 @@ spec:
         export KUBECONFIG=$(workspaces.kubeconfig-dir.path)/kubeconfig;
 
         echo "--- DEPLOY BOOKINFO APPS WITHOUT $(params.TARGET_APP) ---";
-        kubectl apply -f ./deploy/bases/bookinfo-without-$(params.TARGET_APP).yaml;
+        kubectl apply -f ./deploy/base/bookinfo-without-$(params.TARGET_APP).yaml;
 
         echo "--- SHOW $(params.TARGET_APP) IMAGE ---";
         sed -ne "s;___IMAGE_URL___;$(params.IMAGE);" \
           -ne "s;___IMAGE_DIGEST___;$(params.IMAGE_DIGEST);p" \
-          ./deploy/bases/bookinfo-$(params.TARGET_APP).yaml;
+          ./deploy/base/bookinfo-$(params.TARGET_APP).yaml;
   
         echo "--- DEPLOY $(params.TARGET_APP) APP ---";
-        kubectl delete -f ./deploy/bases/bookinfo-$(params.TARGET_APP).yaml;
+        kubectl delete -f ./deploy/base/bookinfo-$(params.TARGET_APP).yaml;
         sed -e "s;___IMAGE_URL___;$(params.IMAGE);g" \
           -e "s;___IMAGE_DIGEST___;$(params.IMAGE_DIGEST);g" \
-          ./deploy/bases/bookinfo-$(params.TARGET_APP).yaml | kubectl apply -f - ;
+          ./deploy/base/bookinfo-$(params.TARGET_APP).yaml | kubectl apply -f - ;
 
         echo "--- SHOW DEPLOYMENTS AND SERVECES ---";
         kubectl get deployment,service;
