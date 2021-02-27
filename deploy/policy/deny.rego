@@ -1,11 +1,9 @@
 package main
 
-import data.kubernetes
-
 name = input.metadata.name
 
 deny[msg] {
-  kubernetes.is_deployment
+  input.kind = "Deployment"
   not input.spec.template.spec.securityContext.runAsNonRoot
 
   msg = sprintf("Containers must not run as root in Deployment %s", [name])
@@ -17,7 +15,7 @@ required_deployment_selectors {
 }
 
 deny[msg] {
-  kubernetes.is_deployment
+  input.kind = "Deployment"
   not required_deployment_selectors
 
   msg = sprintf("Deployment %s must provide app/release labels for pod selectors", [name])

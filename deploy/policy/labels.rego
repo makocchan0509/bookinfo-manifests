@@ -1,7 +1,5 @@
 package main
 
-import data.kubernetes
-
 name = input.metadata.name
 
 required_deployment_labels {
@@ -14,7 +12,7 @@ required_deployment_labels {
 }
 
 deny[msg] {
-  kubernetes.is_deployment
+  input.kind = "Deployment"
   not required_deployment_labels
   msg = sprintf("%s must include Kubernetes recommended labels: https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/#labels", [name])
 }
