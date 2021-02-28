@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: TaskRun
 metadata:
-  generateName: gradle-build-run-
+  generateName: gradle-build-reviews-run-
 spec:
   taskRef:
     name: gradle

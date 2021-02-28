@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: TaskRun
 metadata:
-  generateName: trivy-scanning-run-
+  generateName: trivy-scanning-reviews-run-
 spec:
   serviceAccountName: tekton-admin
   taskRef:
