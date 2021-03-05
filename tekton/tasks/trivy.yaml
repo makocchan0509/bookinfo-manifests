@@ -19,7 +19,13 @@ spec:
     description: Reference of the image digest Trivy will scan.
   - name: TRIVY_IMAGE
     description: The location of the Trivy scan image.
-    default: aquasec/trivy:0.15.0
+    default: aquasec/trivy:0.16.0
+  - name: TRIVY_USERNAME
+    description: Authentication user name to get the target scan image.
+    default: ""
+  - name: TRIVY_PASSWORD
+    description: Authentication password to get the target scan image.
+    default: ""
   workspaces:
   - name: cache
   - name: report
@@ -27,17 +33,9 @@ spec:
   stepTemplate:
     env:
     - name: TRIVY_USERNAME
-      valueFrom:
-        secretKeyRef:
-          name: gitlab-token
-          key: username
-          optional: true
+      value: $(params.TRIVY_USERNAME)
     - name: TRIVY_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: gitlab-token
-          key: password
-          optional: true
+      value: $(params.TRIVY_PASSWORD)
   steps:
   - name: build-report
     image: $(params.TRIVY_IMAGE)
