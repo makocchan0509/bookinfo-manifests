@@ -45,7 +45,6 @@ spec:
         export KUBECONFIG=$(workspaces.kubeconfig-dir.path)/kubeconfig
 
         echo "--- DEPLOY BOOKINFO APPS WITHOUT $(params.TARGET_APP) ---";
-        ls -la ./
         kubectl apply -f ./deploy/base/bookinfo.yaml -l app!=$(params.TARGET_APP);
 
         echo "--- SHOW $(params.TARGET_APP) IMAGE ---";
