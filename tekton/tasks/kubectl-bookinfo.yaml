@@ -38,14 +38,15 @@ spec:
       script: |
         #!/usr/bin/env bash
         [[ "$(workspaces.manifest-dir.bound)" == "true" ]] && \
-        cd $(workspaces.manifest-dir.path); \
+        cd $(workspaces.manifest-dir.path)
 
         [[ "$(workspaces.kubeconfig-dir.bound)" == "true" ]] && \
         [[ -f $(workspaces.kubeconfig-dir.path)/kubeconfig ]] && \
-        export KUBECONFIG=$(workspaces.kubeconfig-dir.path)/kubeconfig;
+        export KUBECONFIG=$(workspaces.kubeconfig-dir.path)/kubeconfig
 
         echo "--- DEPLOY BOOKINFO APPS WITHOUT $(params.TARGET_APP) ---";
-        kubectl apply -f ./deploy/base/bookinfo-without-$(params.TARGET_APP).yaml;
+        ls -la ./
+        kubectl apply -f ./deploy/base/bookinfo.yaml -l app!=$(params.TARGET_APP);
 
         echo "--- SHOW $(params.TARGET_APP) IMAGE ---";
         sed -ne "s;___IMAGE_URL___;$(params.IMAGE);" \
