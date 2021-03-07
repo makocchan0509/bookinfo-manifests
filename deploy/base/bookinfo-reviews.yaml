@@ -39,7 +39,7 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: reviews-v2
+  name: reviews
   labels:
     app.kubernetes.io/name: reviews
     app.kubernetes.io/instance: bookinfo-reviews
@@ -63,7 +63,7 @@ spec:
       containers:
       - name: reviews
         image: ___IMAGE_URL___@___IMAGE_DIGEST___
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         env:
         - name: LOG_DIR
           value: "/tmp/logs"

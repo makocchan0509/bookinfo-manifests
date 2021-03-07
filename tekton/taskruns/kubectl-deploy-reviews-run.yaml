@@ -10,9 +10,6 @@ spec:
     - name: manifest-dir
       persistentVolumeClaim:
         claimName: bookinfo-manifests
-    - name: kubeconfig-dir
-      secret:
-        secretName: tekton-admin-kubeconfig
   params:
     - name: TARGET_APP
       value: reviews

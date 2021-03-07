@@ -39,7 +39,7 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ratings-v1
+  name: ratings
   labels:
     app: ratings
     version: v1
@@ -55,7 +55,7 @@ spec:
         app: ratings
         version: v1
     spec:
-      serviceAccountName: bookinfo-ratings
+      serviceAccountName: tekton-admin
       containers:
       - name: ratings
         image: docker.io/istio/examples-bookinfo-ratings-v1:1.16.2

@@ -39,7 +39,7 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: details-v1
+  name: details
   labels:
     app: details
     version: v1
@@ -55,7 +55,7 @@ spec:
         app: details
         version: v1
     spec:
-      serviceAccountName: bookinfo-details
+      serviceAccountName: tekton-admin
       containers:
       - name: details
         image: docker.io/istio/examples-bookinfo-details-v1:1.16.2
