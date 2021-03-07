@@ -44,9 +44,6 @@ spec:
         [[ -f $(workspaces.kubeconfig-dir.path)/kubeconfig ]] && \
         export KUBECONFIG=$(workspaces.kubeconfig-dir.path)/kubeconfig
 
-        echo "--- DEPLOY BOOKINFO APPS WITHOUT $(params.TARGET_APP) ---";
-        kubectl apply -f ./deploy/base/bookinfo.yaml -l app!=$(params.TARGET_APP);
-
         echo "--- SHOW $(params.TARGET_APP) IMAGE ---";
         sed -ne "s;___IMAGE_URL___;$(params.IMAGE);" \
           -ne "s;___IMAGE_DIGEST___;$(params.IMAGE_DIGEST);p" \
