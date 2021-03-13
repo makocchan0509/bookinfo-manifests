@@ -8,13 +8,13 @@ spec:
   - name: target-app
     value: reviews
   - name: imageurl
-    value: registry.gitlab.com/cloudnative_impress/bookinfo
+    value: registry.gitlab.com/___GITLAB_USER___/bookinfo
   - name: bookinfo-url
-    value: https://gitlab.com/cloudnative_impress/bookinfo.git
+    value: https://gitlab.com/___GITLAB_USER___/bookinfo.git
   - name: bookinfo-revision
     value: master
   - name: bookinfo-manifests-url
-    value: https://gitlab.com/cloudnative_impress/bookinfo-manifests.git
+    value: https://gitlab.com/___GITLAB_USER___/bookinfo-manifests.git
   - name: bookinfo-manifests-revision
     value: master
   workspaces:
@@ -26,11 +26,5 @@ spec:
       claimName: bookinfo-manifests
   - name: vul-cache
     emptyDir: {}
-  - name: container-scan-reports
-    persistentVolumeClaim:
-      claimName: container-scan-reports 
-  - name: tekton-admin-kubeconfig
-    secret:
-      secretName: tekton-admin-kubeconfig
   pipelineRef:
     name: build-deploy-reviews

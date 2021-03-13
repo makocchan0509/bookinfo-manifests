@@ -10,10 +10,6 @@ spec:
     description: Git Repo for BookInfo Manifests
   - name: vul-cache
     description: Cache vulnerabilities infomations
-  - name: container-scan-reports
-    description: Container Scanning Reports
-  - name: tekton-admin-kubeconfig
-    description: KubeConfig for deploy container
   params:
   - name: target-app
     description: Target application in BookInfo Apps
@@ -52,14 +48,19 @@ spec:
     - name: output
       workspace: bookinfo-manifests
 
-  - name: test-application
+  - name: build-application
     taskRef:
-      name: gradle-test
+      name: gradle
     runAfter:
     - git-clone-bookinfo
     workspaces:
     - name: output
       workspace: bookinfo
+    params:
+    - name: GRADLEOPTS
+      value: ["clean", "build"]
+    - name: CONTEXTDIR
+      value: $(params.target-app)
 
   - name: test-manifests
     taskRef:
@@ -71,7 +72,7 @@ spec:
       workspace: bookinfo-manifests
     params:
     - name: files
-      value: $(workspaces.source.path)/deploy/bases/bookinfo-$(params.target-app).yaml
+      value: $(workspaces.source.path)/deploy/base/bookinfo-$(params.target-app).yaml
     - name: policy
       value: $(workspaces.source.path)/deploy/policy
     - name: args
@@ -81,7 +82,7 @@ spec:
     taskRef:
       name: kaniko
     runAfter:
-    - test-application
+    - build-application
     - test-manifests
     workspaces:
     - name: source
@@ -98,13 +99,13 @@ spec:
   - name: test-container
     taskRef:
       name: trivy
-    runAfter:
-    - build-container
+    when:
+      - input: "$(tasks.build-container.results.IMAGE-DIGEST)"
+        operator: notin
+        values: [""]
     workspaces:
     - name: cache
       workspace: vul-cache
-    - name: report
-      workspace: container-scan-reports
     params:
     - name: IMAGE
       value: $(params.imageurl)/$(params.target-app)
@@ -119,8 +120,6 @@ spec:
     workspaces:
     - name: manifest-dir
       workspace: bookinfo-manifests
-    - name: kubeconfig-dir
-      workspace: tekton-admin-kubeconfig
     params:
     - name: TARGET_APP
       value: $(params.target-app)
