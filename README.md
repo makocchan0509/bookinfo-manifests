@@ -1,8 +1,12 @@
-# Bookinfo
+# Bookinfo Manifests
 
-Original Contents are    
+Original Contents   
 See https://gitlab.com/cloudnative_impress/bookinfo-manifests
 
 #### References    
-Bookinfo Sample   
+
+- Related BookInfo Applications
+See https://gitlab.com/cloudnative_impress/bookinfo
+
+- Bookinfo Sample   
 See https://github.com/istio/istio/tree/master/samples/bookinfo
