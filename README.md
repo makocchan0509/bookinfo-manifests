@@ -5,7 +5,7 @@ See https://gitlab.com/cloudnative_impress/bookinfo-manifests
 
 #### References    
 
-- Related BookInfo Applications
+- Related BookInfo Applications    
 See https://gitlab.com/cloudnative_impress/bookinfo
 
 - Bookinfo Sample   
