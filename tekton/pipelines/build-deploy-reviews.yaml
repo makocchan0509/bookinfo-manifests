@@ -99,10 +99,8 @@ spec:
   - name: test-container
     taskRef:
       name: trivy
-    when:
-      - input: "$(tasks.build-container.results.IMAGE-DIGEST)"
-        operator: notin
-        values: [""]
+    runAfter:
+    - build-container
     workspaces:
     - name: cache
       workspace: vul-cache
