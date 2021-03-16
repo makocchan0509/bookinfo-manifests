@@ -1,0 +1,45 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: build-deploy-reviews-template
+spec:
+  params:
+  - name: TARGER-APP
+    description: Target deployment service name in BookInfo 
+  - name: GITLAB_USER
+    description: Your registry username
+  - name: BOOKINFO-URL
+    description: Git registry URL for building BookInfo services
+  - name: BOOKINFO-REVISION
+    description: Git revision name/ID for building BookInfo services
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      generateName: build-deploy-reviews-run-
+    spec:
+      serviceAccountName: tekton-admin
+      params:
+      - name: target-app
+        value: $(params.TARGET-APP)
+      - name: imageurl
+        value: registry.gitlab.com/$(params.GITLAB_USER)/bookinfo
+      - name: bookinfo-url
+        value: $(params.BOOKINFO-URL)
+      - name: bookinfo-revision
+        value: $(params.BOOKINFO-REVISION)
+      - name: bookinfo-manifests-url
+        value: https://gitlab.com/$(params.GITLAB_USER)/bookinfo-manifests.git
+      - name: bookinfo-manifests-revision
+        value: master
+      workspaces:
+      - name: bookinfo
+        persistentVolumeClaim:
+          claimName: bookinfo
+      - name: bookinfo-manifests
+        persistentVolumeClaim:
+          claimName: bookinfo-manifests
+      - name: vul-cache
+        emptyDir: {}
+      pipelineRef:
+        name: build-deploy-reviews
