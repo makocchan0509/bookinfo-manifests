@@ -14,6 +14,6 @@ spec:
           eventTypes:
             - Push Hook  
     template:
-      name: build-deploy-reviews-template
+      ref: build-deploy-reviews-template
     bindings:
-    - name: build-deploy-reviews-binding
+      - ref: build-deploy-reviews-binding

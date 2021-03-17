@@ -6,7 +6,7 @@ spec:
   params:
   - name: TARGET-APP
     value: reviews
-  - name: GIT_USERNAME
+  - name: GITLAB-USER
     value: $(body.user_username)
   - name: BOOKINFO-URL
     value: $(body.repository.git_http_url)

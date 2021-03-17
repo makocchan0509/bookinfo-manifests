@@ -4,9 +4,9 @@ metadata:
   name: build-deploy-reviews-template
 spec:
   params:
-  - name: TARGER-APP
+  - name: TARGET-APP
     description: Target deployment service name in BookInfo 
-  - name: GITLAB_USER
+  - name: GITLAB-USER
     description: Your registry username
   - name: BOOKINFO-URL
     description: Git registry URL for building BookInfo services
@@ -21,15 +21,15 @@ spec:
       serviceAccountName: tekton-admin
       params:
       - name: target-app
-        value: $(params.TARGET-APP)
+        value: $(tt.params.TARGET-APP)
       - name: imageurl
-        value: registry.gitlab.com/$(params.GITLAB_USER)/bookinfo
+        value: registry.gitlab.com/$(tt.params.GITLAB-USER)/bookinfo
       - name: bookinfo-url
-        value: $(params.BOOKINFO-URL)
+        value: $(tt.params.BOOKINFO-URL)
       - name: bookinfo-revision
-        value: $(params.BOOKINFO-REVISION)
+        value: $(tt.params.BOOKINFO-REVISION)
       - name: bookinfo-manifests-url
-        value: https://gitlab.com/$(params.GITLAB_USER)/bookinfo-manifests.git
+        value: https://gitlab.com/$(tt.params.GITLAB-USER)/bookinfo-manifests.git
       - name: bookinfo-manifests-revision
         value: master
       workspaces:
