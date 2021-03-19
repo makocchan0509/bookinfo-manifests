@@ -4,5 +4,6 @@ metadata:
   name: tekton-admin
 secrets:
   - name: gitlab-token
+  - name: gitlab-webhook-token
 ##imagePullSecrets:
 ##  - name: tekton-admin-dockercfg
