@@ -14,4 +14,4 @@ spec:
     - name: url
       value: https://gitlab.com/___GITLAB_USER___/bookinfo.git
     - name: revision
-      value: master
+      value: main

@@ -13,4 +13,4 @@ spec:
     - name: url
       value: https://gitlab.com/cloudnative_impress/bookinfo.git
     - name: revision
-      value: master
+      value: main
