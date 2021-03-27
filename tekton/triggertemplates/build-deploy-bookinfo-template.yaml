@@ -1,7 +1,7 @@
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerTemplate
 metadata:
-  name: build-deploy-reviews-template
+  name: build-deploy-bookinfo-template
 spec:
   params:
   - name: TARGET-APP
@@ -16,7 +16,7 @@ spec:
   - apiVersion: tekton.dev/v1beta1
     kind: PipelineRun
     metadata:
-      generateName: build-deploy-reviews-run-
+      generateName: build-deploy-bookinfo-run-
     spec:
       serviceAccountName: tekton-admin
       params:
