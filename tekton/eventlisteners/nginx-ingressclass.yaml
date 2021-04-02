@@ -2,7 +2,9 @@ apiVersion: networking.k8s.io/v1
 kind: IngressClass
 metadata:
   name: nginx
-  # annotations:
-  #   ingressclass.kubernetes.io/is-default-class: "true"
+  annotations:
+    # use the shared ingress-nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    # ingressclass.kubernetes.io/is-default-class: "true"
 spec:
-  controller: nginx.org/ingress-controller
+  controller: k8s.io/ingress-nginx

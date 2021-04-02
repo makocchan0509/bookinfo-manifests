@@ -2,11 +2,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: trigger-el
-  annotations:
-    # use the shared ingress-nginx
-    ingressClassName: nginx
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
+  ingressClassName: nginx
   rules:
   - http:
       paths:
