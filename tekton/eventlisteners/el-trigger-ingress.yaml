@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: trigger-el
+  annotations:
+    # use the shared ingress-nginx
+    ingressClassName: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+  - http:
+      paths:
+        - path: /el/reviews/topic
+          pathType: Prefix
+          backend:
+            service:
+              name: el-build-deploy-reviews-listener
+              port:
+                number: 8080

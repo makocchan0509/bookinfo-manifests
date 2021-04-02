@@ -2,6 +2,8 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: gitlab-webhook-token
+  labels:
+    app.kubernetes.io/part-of: tekton-triggers
 type: Opaque
 stringData:
   secretToken: "tekton-trigger-secret"
