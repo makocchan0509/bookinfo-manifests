@@ -3,8 +3,7 @@ kind: IngressClass
 metadata:
   name: nginx
   annotations:
-    # use the shared ingress-nginx
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    # ingressclass.kubernetes.io/is-default-class: "true"
+    ingressclass.kubernetes.io/ssl-redirect: "false"
+    ingressclass.kubernetes.io/is-default-class: "true"
 spec:
   controller: k8s.io/ingress-nginx
