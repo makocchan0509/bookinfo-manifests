@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: tekton-triggers
+  name: gitlab-el
 spec:
   ingressClassName: nginx
   rules:
