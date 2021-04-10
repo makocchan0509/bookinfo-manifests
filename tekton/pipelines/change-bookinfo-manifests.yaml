@@ -1,0 +1,79 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: change-bookinfo-manifests
+spec:
+  workspaces:
+  - name: bookinfo-manifests
+    description: Git Repo for BookInfo Manifests
+  - name: temp-dir
+    description: Temporary dir for git-cli Task
+  params:
+  - name: imageurl
+    description: Target container registry URL
+  - name: imagedigest
+    description: Target container image digest
+  - name: bookinfo-manifests-url
+    description: Git Repo URL for BookInfo
+  - name: bookinfo-manifests-revision  
+    description: Git Repo Revision for BookInfo
+  - name: bookinfo-manifests-username 
+    description: Git Repo Username for BookInfo Manifests
+  - name: bookinfo-manifests-useremail  
+    description: Git Repo User Email for BookInfo Manifests
+  tasks:
+  - name: git-clone-bookinfo-manifests
+    taskRef:
+      name: git-clone
+    params:
+    - name: url
+      value: $(params.bookinfo-manifests-url)
+    - name: revision
+      value: $(params.bookinfo-manifests-revision)
+    workspaces:
+    - name: output
+      workspace: bookinfo-manifests
+
+  - name: change-manifests
+    taskRef:
+      name: kustomize
+    runAfter:
+    - git-clone-bookinfo-manifests
+    workspaces:
+    - name: manifest-dir
+      workspace: bookinfo-manifests
+    params:
+    - name: KUSTOMIZE_SCRIPT
+      value: |
+        cd ./deploy/overlays/stg
+          kustomize edit set image ___IMAGE_URL___@___IMAGE_DIGEST___=$(params.imageurl)@$(params.imagedigest) 
+          kustomize build .
+        cd -
+        cd ./deploy/overlays/prod
+          kustomize edit set image ___IMAGE_URL___@___IMAGE_DIGEST___=$(params.imageurl)@$(params.imagedigest) 
+          kustomize build .
+
+  - name: git-push
+    taskRef:
+      name: git-cli
+    runAfter:
+    - change-manifests
+    workspaces:
+    - name: source
+      workspace: bookinfo-manifests
+    - name: input
+      workspace: temp-dir
+    params:
+    - name: GIT_USER_NAME
+      value: $(params.bookinfo-manifests-username)
+    - name: GIT_USER_EMAIL
+      value: $(params.bookinfo-manifests-useremail)
+    - name: GIT_SCRIPT
+      value: |
+        cd $(workspaces.source.path)
+        git log --oneline
+        git checkout main
+        git add -A ./deploy/overlays/
+        git diff
+        git commit -m "Change manifests due to new container build."
+        git push
