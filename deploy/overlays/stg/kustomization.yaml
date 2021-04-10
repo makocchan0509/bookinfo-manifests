@@ -7,9 +7,9 @@ commonLabels:
 namespace: stg
 
 images:
-- digest: 9fe1ffb4807b504baab0311f98eef40b3a1cae3a
+- digest: a82d565dd12b7156b8e988b9d2cc8ed982d78a59
   name: ___IMAGE_URL___@___IMAGE_DIGEST___
-  newName: registry.gitlab.com/cloudnative_impress/bookinfo/reviews
+  newName: registry.gitlab.com/cloudnative_impress/bookinfo
 
 resources:
 - ../../base
