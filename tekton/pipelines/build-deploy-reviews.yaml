@@ -89,7 +89,7 @@ spec:
       workspace: bookinfo
     params:
     - name: IMAGE
-      value: $(params.imageurl)/$(params.target-app):$(context.pipelineRun.name)
+      value: $(params.imageurl)/$(params.target-app):$(params.bookinfo-revision)
     - name: CONTEXT
       value: $(params.target-app)/reviews-wlpcfg
     - name: BUILDER_IMAGE
