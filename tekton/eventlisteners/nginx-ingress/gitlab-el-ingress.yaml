@@ -11,6 +11,6 @@ spec:
           pathType: Prefix
           backend:
             service:
-              name: el-build-deploy-reviews-listener
+              name: el-reviews-listener
               port:
                 number: 8080
