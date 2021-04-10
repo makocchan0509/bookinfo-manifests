@@ -7,7 +7,7 @@ spec:
   rules:
   - http:
       paths:
-        - path: /el/reviews/topic
+        - path: /el/reviews
           pathType: Prefix
           backend:
             service:

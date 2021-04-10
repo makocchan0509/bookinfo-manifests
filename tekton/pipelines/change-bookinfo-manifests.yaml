@@ -9,6 +9,8 @@ spec:
   - name: temp-dir
     description: Temporary dir for git-cli Task
   params:
+  - name: target-app
+    description: Target application in BookInfo Apps
   - name: imageurl
     description: Target container registry URL
   - name: imagedigest
@@ -46,11 +48,11 @@ spec:
     - name: KUSTOMIZE_SCRIPT
       value: |
         cd ./deploy/overlays/stg
-          kustomize edit set image ___IMAGE_URL___@___IMAGE_DIGEST___=$(params.imageurl)@$(params.imagedigest) 
+          kustomize edit set image ___IMAGE_URL___@___IMAGE_DIGEST___=$(params.imageurl)/$(params.target-app)@$(params.imagedigest) 
           kustomize build .
         cd -
         cd ./deploy/overlays/prod
-          kustomize edit set image ___IMAGE_URL___@___IMAGE_DIGEST___=$(params.imageurl)@$(params.imagedigest) 
+          kustomize edit set image ___IMAGE_URL___@___IMAGE_DIGEST___=$(params.imageurl)/$(params.target-app)@$(params.imagedigest) 
           kustomize build .
 
   - name: git-push
@@ -71,9 +73,8 @@ spec:
     - name: GIT_SCRIPT
       value: |
         cd $(workspaces.source.path)
-        git log --oneline
         git checkout main
-        git add -A ./deploy/overlays/
         git diff
-        git commit -m "Change manifests due to new container build."
+        git add -A ./deploy/overlays/
+        git commit -m "[TEKTON]Change manifests due to new container build."
         git push

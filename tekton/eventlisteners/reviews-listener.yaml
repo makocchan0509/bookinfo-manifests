@@ -1,7 +1,7 @@
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: EventListener
 metadata:
-  name: build-deploy-reviews-listener
+  name: reviews-listener
 spec:
   serviceAccountName: tekton-admin
   triggers:
@@ -17,3 +17,15 @@ spec:
       ref: build-deploy-bookinfo-template
     bindings:
       - ref: build-deploy-reviews-binding
+  - name: mergerequest-events-main-branches
+    interceptors:
+      - gitlab:
+          secretRef:
+            secretName: gitlab-webhook-token
+            secretKey: secretToken
+          eventTypes:
+            - Merge Request Hook
+    template:
+      ref: change-bookinfo-manifests-template
+    bindings:
+      - ref: change-bookinfo-manifests-binding  
