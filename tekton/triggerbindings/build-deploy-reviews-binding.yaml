@@ -12,3 +12,7 @@ spec:
     value: $(body.repository.git_http_url)
   - name: BOOKINFO-REVISION
     value: $(body.checkout_sha)
+  - name: BOOKINFO-USERNAME
+    value: $(body.user_username)
+  - name: BOOKINFO-EMAIL
+    value: $(body.user_email)

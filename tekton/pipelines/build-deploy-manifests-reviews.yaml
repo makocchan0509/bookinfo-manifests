@@ -1,0 +1,177 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: build-deploy-reviews
+spec:
+  workspaces:
+  - name: bookinfo
+    description: Git Repo for BookInfo Apps
+  - name: bookinfo-manifests
+    description: Git Repo for BookInfo Manifests
+  - name: vul-cache
+    description: Cache vulnerabilities infomations
+  - name: temp-dir
+    description: Temporary dir for git-cli Task
+  params:
+  - name: target-app
+    description: Target application in BookInfo Apps
+  - name: imageurl
+    description: Target container registry URL
+  - name: bookinfo-url
+    description: Git Repo URL for BookInfo Apps
+  - name: bookinfo-revision  
+    description: Git Repo Revision for BookInfo Apps
+  - name: bookinfo-manifests-url
+    description: Git Repo URL for BookInfo Manifests
+  - name: bookinfo-manifests-revision  
+    description: Git Repo Revision for BookInfo Manifests
+  - name: bookinfo-manifests-username 
+    description: Git Repo Username for BookInfo Manifests
+  - name: bookinfo-manifests-useremail  
+    description: Git Repo User Email for BookInfo Manifests
+  tasks:
+  - name: git-clone-bookinfo
+    taskRef:
+      name: git-clone
+    params:
+    - name: url
+      value: $(params.bookinfo-url)
+    - name: revision
+      value: $(params.bookinfo-revision)
+    workspaces:
+    - name: output
+      workspace: bookinfo
+      
+  - name: git-clone-bookinfo-manifests
+    taskRef:
+      name: git-clone
+    params:
+    - name: url
+      value: $(params.bookinfo-manifests-url)
+    - name: revision
+      value: $(params.bookinfo-manifests-revision)
+    workspaces:
+    - name: output
+      workspace: bookinfo-manifests
+
+  - name: build-application
+    taskRef:
+      name: gradle
+    runAfter:
+    - git-clone-bookinfo
+    workspaces:
+    - name: output
+      workspace: bookinfo
+    params:
+    - name: GRADLEOPTS
+      value: ["clean", "build"]
+    - name: CONTEXTDIR
+      value: $(params.target-app)
+
+  - name: test-manifests
+    taskRef:
+      name: conftest
+    runAfter:
+    - git-clone-bookinfo-manifests
+    workspaces:
+    - name: source
+      workspace: bookinfo-manifests
+    params:
+    - name: files
+      value: $(workspaces.source.path)/deploy/base/bookinfo-$(params.target-app).yaml
+    - name: policy
+      value: $(workspaces.source.path)/deploy/policy
+    - name: args
+      value: ["--trace"]
+
+  - name: build-container
+    taskRef:
+      name: kaniko
+    runAfter:
+    - build-application
+    - test-manifests
+    workspaces:
+    - name: source
+      workspace: bookinfo
+    params:
+    - name: IMAGE
+      value: $(params.imageurl)/$(params.target-app):$(params.bookinfo-revision)
+    - name: CONTEXT
+      value: $(params.target-app)/reviews-wlpcfg
+    - name: BUILDER_IMAGE
+      ##  description: kaniko v1.3.0
+      value: gcr.io/kaniko-project/executor@sha256:b9eec410fa32cd77cdb7685c70f86a96debb8b087e77e63d7fe37eaadb178709
+
+  - name: test-container
+    taskRef:
+      name: trivy
+    runAfter:
+    - build-container
+    workspaces:
+    - name: cache
+      workspace: vul-cache
+    params:
+    - name: IMAGE
+      value: $(params.imageurl)/$(params.target-app)
+    - name: IMAGE_DIGEST
+      value: $(tasks.build-container.results.IMAGE-DIGEST)
+
+  - name: deploy-container
+    taskRef:
+      name: kubectl-bookinfo
+    runAfter:
+    - test-container
+    workspaces:
+    - name: manifest-dir
+      workspace: bookinfo-manifests
+    params:
+    - name: TARGET_APP
+      value: $(params.target-app)
+    - name: IMAGE
+      value: $(params.imageurl)/$(params.target-app)
+    - name: IMAGE_DIGEST
+      value: $(tasks.build-container.results.IMAGE-DIGEST) 
+
+  - name: change-manifests
+    taskRef:
+      name: kustomize
+    runAfter:
+    - deploy-container
+    workspaces:
+    - name: manifest-dir
+      workspace: bookinfo-manifests
+    params:
+    - name: KUSTOMIZE_SCRIPT
+      value: |
+        cd ./deploy/overlays/stg
+          kustomize edit set image ___IMAGE_URL___@___IMAGE_DIGEST___=$(params.imageurl)/$(params.target-app)@$(tasks.build-container.results.IMAGE-DIGEST)
+          kustomize build .
+        cd -
+        cd ./deploy/overlays/prod
+          kustomize edit set image ___IMAGE_URL___@___IMAGE_DIGEST___=$(params.imageurl)/$(params.target-app)@$(tasks.build-container.results.IMAGE-DIGEST)
+          kustomize build .
+
+  - name: git-push-manifests
+    taskRef:
+      name: git-cli
+    runAfter:
+    - change-manifests
+    workspaces:
+    - name: source
+      workspace: bookinfo-manifests
+    - name: input
+      workspace: temp-dir
+    params:
+    - name: GIT_USER_NAME
+      value: $(params.bookinfo-manifests-username)
+    - name: GIT_USER_EMAIL
+      value: $(params.bookinfo-manifests-useremail)
+    - name: GIT_SCRIPT
+      value: |
+        cd $(workspaces.source.path)
+        git checkout main
+        git diff
+        git add -A ./deploy/overlays/
+        git commit -m "[TEKTON]Change manifests due to new container build."
+        git push
+ 
