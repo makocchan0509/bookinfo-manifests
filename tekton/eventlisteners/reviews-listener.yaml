@@ -7,12 +7,15 @@ spec:
   triggers:
   - name: push-events-topic-branches
     interceptors:
-      - gitlab:
-          secretRef:
+      - ref:
+          name: "gitlab"
+        params:
+        - name: "secretRef"
+          value:
             secretName: gitlab-webhook-token
             secretKey: secretToken
-          eventTypes:
-            - Push Hook  
+        - name: "eventTypes"
+          value: ["Push Hook"]  
     template:
       ref: build-deploy-bookinfo-template
     bindings:
