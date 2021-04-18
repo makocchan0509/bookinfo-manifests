@@ -172,6 +172,6 @@ spec:
         git checkout main
         git diff
         git add -A ./deploy/overlays/
-        git commit -m "[TEKTON]Change manifests due to new container build."
+        git commit -m "[TEKTON-PIPELINES] Change container image in manifests: $(tasks.build-container.results.IMAGE-DIGEST)."
         git push
  
