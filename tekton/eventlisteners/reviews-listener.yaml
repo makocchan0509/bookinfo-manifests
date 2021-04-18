@@ -9,13 +9,14 @@ spec:
     interceptors:
       - ref:
           name: "gitlab"
+          kind: ClusterInterceptor
         params:
         - name: "secretRef"
           value:
             secretName: gitlab-webhook-token
             secretKey: secretToken
         - name: "eventTypes"
-          value: ["Push Hook"]  
+          value: ["Push Hook"]
     template:
       ref: build-deploy-bookinfo-template
     bindings:

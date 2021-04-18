@@ -12,6 +12,10 @@ spec:
     description: Git registry URL for building BookInfo services
   - name: BOOKINFO-REVISION
     description: Git revision name/ID for building BookInfo services
+  - name: BOOKINFO-USERNAME
+    description: BookInfo repository username
+  - name: BOOKINFO-EMAIL
+    description: BookInfo repository user email address
   resourcetemplates:
   - apiVersion: tekton.dev/v1beta1
     kind: PipelineRun
@@ -32,6 +36,10 @@ spec:
         value: https://gitlab.com/$(tt.params.GITLAB-PROJECT-PATH)-manifests.git
       - name: bookinfo-manifests-revision
         value: main
+      - name: bookinfo-manifests-username
+        value: $(tt.params.BOOKINFO-USERNAME)
+      - name: bookinfo-manifests-useremail
+        value: $(tt.params.BOOKINFO-EMAIL)
       workspaces:
       - name: bookinfo
         persistentVolumeClaim:
@@ -40,6 +48,8 @@ spec:
         persistentVolumeClaim:
           claimName: bookinfo-manifests
       - name: vul-cache
+        emptyDir: {}
+      - name: temp-dir
         emptyDir: {}
       pipelineRef:
         name: build-deploy-reviews
