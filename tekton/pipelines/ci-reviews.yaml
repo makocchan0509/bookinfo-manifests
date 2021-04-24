@@ -132,7 +132,7 @@ spec:
     - name: IMAGE_DIGEST
       value: $(tasks.build-container.results.IMAGE-DIGEST) 
 
-  - name: change-manifests
+  - name: update-manifests
     taskRef:
       name: kustomize
     runAfter:
@@ -151,11 +151,11 @@ spec:
           kustomize edit set image ___IMAGE_URL___@___IMAGE_DIGEST___=$(params.imageurl)/$(params.target-app)@$(tasks.build-container.results.IMAGE-DIGEST)
           kustomize build .
 
-  - name: git-push-manifests
+  - name: push-manifests
     taskRef:
       name: git-cli
     runAfter:
-    - change-manifests
+    - update-manifests
     workspaces:
     - name: source
       workspace: bookinfo-manifests
