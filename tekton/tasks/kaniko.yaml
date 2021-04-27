@@ -3,9 +3,9 @@ kind: Task
 metadata:
   name: kaniko
   labels:
-    app.kubernetes.io/version: "0.1"
+    app.kubernetes.io/version: "0.3"
   annotations:
-    tekton.dev/pipelines.minVersion: "0.12.1"
+    tekton.dev/pipelines.minVersion: "0.17.0"
     tekton.dev/tags: image-build
 spec:
   description: >-
@@ -28,10 +28,15 @@ spec:
   - name: EXTRA_ARGS
     default: ""
   - name: BUILDER_IMAGE
-    description: The image on which builds will run
-    default: gcr.io/kaniko-project/executor@sha256:e36c9fa99279217c4bb8ee172819b441c3ca8ef946dc0e28b21721eefb2ba70a
+    description: The image on which builds will run (default is v1.5.1)
+    default: gcr.io/kaniko-project/executor:v1.5.1@sha256:c6166717f7fe0b7da44908c986137ecfeab21f31ec3992f6e128fff8a94be8a5
   workspaces:
   - name: source
+    description: Holds the context and docker file
+  - name: dockerconfig
+    description: Includes a docker `config.json`
+    optional: true
+    mountPath: /kaniko/.docker
   results:
   - name: IMAGE-DIGEST
     description: Digest of the image just built.
@@ -40,13 +45,7 @@ spec:
   - name: build-and-push
     workingDir: $(workspaces.source.path)
     image: $(params.BUILDER_IMAGE)
-    # specifying DOCKER_CONFIG is required to allow kaniko to detect docker credential
-    # https://github.com/tektoncd/pipeline/pull/706
-    env:
-    - name: DOCKER_CONFIG
-      value: /tekton/home/.docker
-    command:
-    - /kaniko/executor
+    args:
     - $(params.EXTRA_ARGS)
     - --dockerfile=$(params.DOCKERFILE)
     - --context=$(workspaces.source.path)/$(params.CONTEXT)  # The user does not need to care the workspace and the source.
