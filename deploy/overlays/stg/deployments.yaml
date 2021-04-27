@@ -4,6 +4,6 @@ metadata:
   name: reviews
 spec: 
   replicas: 3
-  templates:
+  template:
     spec:
       serviceAccountName: bookinfo-reviews
