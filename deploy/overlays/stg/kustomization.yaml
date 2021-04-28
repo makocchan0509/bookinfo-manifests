@@ -16,3 +16,4 @@ resources:
 
 patchesStrategicMerge:
 - deployments.yaml
+- serviceaccount.yaml
