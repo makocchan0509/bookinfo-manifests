@@ -7,7 +7,7 @@ spec:
   destination:
     namespace: stg
     server: https://kubernetes.default.svc
-  project: stg
+  project: stg-bookinfo
   source:
     kustomize:
       namePrefix: stg-
