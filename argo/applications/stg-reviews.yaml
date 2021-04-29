@@ -13,7 +13,8 @@ spec:
       namePrefix: stg-
     path: deploy/overlays/stg
     repoURL: https://gitlab.com/cloudnative_impress/bookinfo-manifests.git
-    targetRevision: HEAD
+    targetRevision: main
   syncPolicy:
-    syncOptions:
-    - PrunePropagationPolicy=foreground
+    automated:
+      prune: true
+      selfHeal: true
