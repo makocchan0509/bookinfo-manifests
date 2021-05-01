@@ -10,7 +10,6 @@ spec:
   project: stg-bookinfo
   source:
     kustomize:
-      namePrefix: stg-
     path: deploy/overlays/stg
     repoURL: https://gitlab.com/cloudnative_impress/bookinfo-manifests.git
     targetRevision: main
