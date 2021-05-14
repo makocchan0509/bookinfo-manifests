@@ -17,4 +17,3 @@ resources:
 patchesStrategicMerge:
 - deployments.yaml
 - serviceaccount.yaml
-- ingress.yaml
