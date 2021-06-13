@@ -1,7 +1,7 @@
 apiVersion: kubernetes-client.io/v1
 kind: ExternalSecret
 metadata:
-  name: stg-gitlab-auth
+  name: gitlab-auth-secret
 spec:
   backendType: gcpSecretsManager
   projectId: cloudnative-cicd-redhat
