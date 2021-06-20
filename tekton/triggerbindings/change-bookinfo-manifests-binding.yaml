@@ -1,0 +1,16 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: change-bookinfo-manifests-binding
+spec:
+  params:
+  - name: TARGET-APP
+    value: reviews
+  - name: GITLAB-PROJECT-PATH
+    value: $(body.project.path_with_namespace)
+  - name: BOOKINFO-REVISION
+    value: $(body.object_attributes.last_commit.id)
+  - name: BOOKINFO-USERNAME
+    value: $(body.user.username)
+  - name: BOOKINFO-EMAIL
+    value: $(body.user.email)

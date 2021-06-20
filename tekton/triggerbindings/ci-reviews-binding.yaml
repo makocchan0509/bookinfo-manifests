@@ -1,0 +1,18 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: build-deploy-reviews-binding
+spec:
+  params:
+  - name: TARGET-APP
+    value: reviews
+  - name: GITLAB-PROJECT-PATH
+    value: $(body.project.path_with_namespace)
+  - name: BOOKINFO-URL
+    value: $(body.repository.git_http_url)
+  - name: BOOKINFO-REVISION
+    value: $(body.checkout_sha)
+  - name: BOOKINFO-USERNAME
+    value: $(body.user_username)
+  - name: BOOKINFO-EMAIL
+    value: $(body.user_email)

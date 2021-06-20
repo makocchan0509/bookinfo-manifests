@@ -1,0 +1,47 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: change-bookinfo-manifests-template
+spec:
+  params:
+  - name: TARGET-APP
+    description: Target deployment service name in BookInfo 
+  - name: GITLAB-PROJECT-PATH
+    description: Your registry project path
+  - name: BOOKINFO-REVISION
+    description: Git revision name/ID for building BookInfo services
+  - name: BOOKINFO-USERNAME
+    description: BookInfo repository username
+  - name: BOOKINFO-EMAIL
+    description: BookInfo repository user email address
+   
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      generateName: change-bookinfo-manifests-run-
+    spec:
+      serviceAccountName: tekton-admin
+      params:
+      - name: target-app
+        value: $(tt.params.TARGET-APP)
+      - name: imageurl
+        value: registry.gitlab.com/$(tt.params.GITLAB-PROJECT-PATH)
+      - name: imagedigest
+        value: $(tt.params.BOOKINFO-REVISION)
+      - name: bookinfo-manifests-url
+        value: https://gitlab.com/$(tt.params.GITLAB-PROJECT-PATH)-manifests.git
+      - name: bookinfo-manifests-revision
+        value: main
+      - name: bookinfo-manifests-username
+        value: $(tt.params.BOOKINFO-USERNAME)
+      - name: bookinfo-manifests-useremail
+        value: $(tt.params.BOOKINFO-EMAIL)
+      workspaces:
+      - name: bookinfo-manifests
+        persistentVolumeClaim:
+          claimName: bookinfo-manifests
+      - name: temp-dir
+        emptyDir: {}
+      pipelineRef:
+        name: change-bookinfo-manifests

@@ -55,7 +55,7 @@ spec:
         app: productpage
         version: v1
     spec:
-      serviceAccountName: tekton-admin
+      serviceAccountName: bookinfo-productpage
       containers:
       - name: productpage
         image: docker.io/istio/examples-bookinfo-productpage-v1:1.16.2

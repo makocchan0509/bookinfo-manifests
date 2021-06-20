@@ -40,6 +40,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: reviews
+#  annotations:
+#    argocd.argoproj.io/compare-options: IgnoreExtraneous
+#    argocd.argoproj.io/sync-options: Prune=false
   labels:
     app.kubernetes.io/name: reviews
     app.kubernetes.io/instance: bookinfo-reviews
@@ -63,7 +66,7 @@ spec:
       containers:
       - name: reviews
         image: ___IMAGE_URL___@___IMAGE_DIGEST___
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         env:
         - name: LOG_DIR
           value: "/tmp/logs"

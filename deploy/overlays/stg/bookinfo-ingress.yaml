@@ -2,13 +2,11 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: bookinfo
-  labels:
-    app: productpage
-    service: productpage
 spec:
   ingressClassName: nginx
   rules:    
-  - http:
+  - host: stg-bookinfo.example.com
+    http:
       paths:
       - path: /productpage
         pathType: Prefix

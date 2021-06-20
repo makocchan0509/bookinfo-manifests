@@ -10,6 +10,8 @@ spec:
     description: Git Repo for BookInfo Manifests
   - name: vul-cache
     description: Cache vulnerabilities infomations
+  - name: temp-dir
+    description: Temporary dir for git-cli Task
   params:
   - name: target-app
     description: Target application in BookInfo Apps
@@ -23,6 +25,10 @@ spec:
     description: Git Repo URL for BookInfo Manifests
   - name: bookinfo-manifests-revision  
     description: Git Repo Revision for BookInfo Manifests
+  - name: bookinfo-manifests-username 
+    description: Git Repo Username for BookInfo Manifests
+  - name: bookinfo-manifests-useremail  
+    description: Git Repo User Email for BookInfo Manifests
   tasks:
   - name: git-clone-bookinfo
     taskRef:
@@ -125,3 +131,47 @@ spec:
       value: $(params.imageurl)/$(params.target-app)
     - name: IMAGE_DIGEST
       value: $(tasks.build-container.results.IMAGE-DIGEST) 
+
+  - name: update-manifests
+    taskRef:
+      name: kustomize
+    runAfter:
+    - deploy-container
+    workspaces:
+    - name: manifest-dir
+      workspace: bookinfo-manifests
+    params:
+    - name: KUSTOMIZE_SCRIPT
+      value: |
+        cd ./deploy/overlays/stg
+          kustomize edit set image ___IMAGE_URL___@___IMAGE_DIGEST___=$(params.imageurl)/$(params.target-app)@$(tasks.build-container.results.IMAGE-DIGEST)
+          kustomize build .
+        cd -
+        cd ./deploy/overlays/prod
+          kustomize edit set image ___IMAGE_URL___@___IMAGE_DIGEST___=$(params.imageurl)/$(params.target-app)@$(tasks.build-container.results.IMAGE-DIGEST)
+          kustomize build .
+
+  - name: push-manifests
+    taskRef:
+      name: git-cli
+    runAfter:
+    - update-manifests
+    workspaces:
+    - name: source
+      workspace: bookinfo-manifests
+    - name: input
+      workspace: temp-dir
+    params:
+    - name: GIT_USER_NAME
+      value: $(params.bookinfo-manifests-username)
+    - name: GIT_USER_EMAIL
+      value: $(params.bookinfo-manifests-useremail)
+    - name: GIT_SCRIPT
+      value: |
+        cd $(workspaces.source.path)
+        git checkout main
+        git diff
+        git add -A ./deploy/overlays/
+        git commit -m "[TEKTON-PIPELINES] Change container image in manifests: $(tasks.build-container.results.IMAGE-DIGEST)."
+        git push
+ 
