@@ -44,6 +44,7 @@ metadata:
 #    argocd.argoproj.io/compare-options: IgnoreExtraneous
 #    argocd.argoproj.io/sync-options: Prune=false
   labels:
+    app: reviews
     app.kubernetes.io/name: reviews
     app.kubernetes.io/instance: bookinfo-reviews
     app.kubernetes.io/version: v2
