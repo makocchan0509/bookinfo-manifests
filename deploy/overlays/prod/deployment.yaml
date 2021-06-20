@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reviews
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+    argocd.argoproj.io/sync-options: Replace=true
+spec: 
+  replicas: 3
+  template:
+    spec:
+      serviceAccountName: bookinfo-reviews
