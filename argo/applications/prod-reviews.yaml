@@ -1,21 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: stg-reviews
+  name: prod-reviews
   namespace: argocd
   labels:
     app: reviews
-    environment: stg
+    environment: prod
 spec:
   destination:
-    namespace: stg
+    namespace: prod
     server: https://kubernetes.default.svc
-  project: stg-bookinfo
+  project: prod-bookinfo
   source:
     kustomize:
-    path: deploy/overlays/stg
+    path: deploy/overlays/prod
     repoURL: https://gitlab.com/___GITLAB_USER___/bookinfo-manifests.git
-    targetRevision: stg
+    targetRevision: prod
   syncPolicy:
     automated:
       prune: true
