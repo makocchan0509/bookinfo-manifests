@@ -7,13 +7,13 @@ commonLabels:
 namespace: stg
 
 images:
-  - digest: sha256:fe7ba5be3445b4ca08c0e6fc0828314a59c68ca4e2a49f784a27fba2c2c60e88
-    name: ___IMAGE_URL___@___IMAGE_DIGEST___
-    newName: registry.gitlab.com/cloudnative_impress/bookinfo/reviews
+- digest: sha256:cbbb1b2b2328a97783d5e80275dbcf93202824e63c1bd5e99d769775a8cd5056
+  name: ___IMAGE_URL___@___IMAGE_DIGEST___
+  newName: registry.gitlab.com/cloudnative_impress/bookinfo/reviews
 
 resources:
-  - ../../base
+- ../../base
 
 patchesStrategicMerge:
-  - deployment.yaml
-  - serviceaccount.yaml
+- deployment.yaml
+- serviceaccount.yaml
