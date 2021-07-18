@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: rollout-reviews
+  name: reviews
 spec:
   replicas: 5
   workloadRef:
@@ -12,9 +12,11 @@ spec:
     canary:
       steps:
         - setWeight: 20
-        - pause: {}
+        - pause: {duration: 1m}
         - setWeight: 40
         - pause: {duration: 20s}
         - setWeight: 60
+        - pause: {duration: 20s}
+        - setWeight: 80
         - pause: {duration: 20s}
   revisionHistoryLimit: 3
