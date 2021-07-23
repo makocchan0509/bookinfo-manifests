@@ -1,13 +1,54 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: rollout-reviews
+  annotations:
+    argocd.argoproj.io/sync-options: Replace=true
+    argocd.argoproj.io/sync-wave: "5"
+  labels:
+    app.kubernetes.io/component: reviews
+    app.kubernetes.io/env: production
+    app.kubernetes.io/instance: bookinfo-reviews
+    app.kubernetes.io/name: reviews
+    app.kubernetes.io/part-of: bookinfo
+    app.kubernetes.io/version: v2
+  name: reviews
+  namespace: prod
 spec:
-  replicas: 5
-  workloadRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: reviews
+  replicas: 3
+  selector:
+    matchLabels:
+      app: reviews
+      app.kubernetes.io/env: production
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: reviews
+        app.kubernetes.io/env: production
+        version: v2
+    spec:
+      containers:
+      - env:
+        - name: LOG_DIR
+          value: /tmp/logs
+        image: registry.gitlab.com/cloudnative_impress/bookinfo/reviews@sha256:cbbb1b2b2328a97783d5e80275dbcf93202824e63c1bd5e99d769775a8cd5056
+        imagePullPolicy: Always
+        name: reviews
+        ports:
+        - containerPort: 9080
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp
+        - mountPath: /opt/ibm/wlp/output
+          name: wlp-output
+      securityContext:
+        runAsNonRoot: true
+      serviceAccountName: bookinfo-reviews
+      volumes:
+      - emptyDir: {}
+        name: wlp-output
+      - emptyDir: {}
+        name: tmp
   strategy:
     canary:
       steps:
@@ -17,4 +58,4 @@ spec:
         - pause: {duration: 20s}
         - setWeight: 60
         - pause: {duration: 20s}
-  revisionHistoryLimit: 3
+        - setWeight: 80
