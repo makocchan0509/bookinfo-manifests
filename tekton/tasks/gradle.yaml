@@ -24,7 +24,7 @@ spec:
       default: reviews
   steps:
     - name: gradle-task
-      image: gradle:jdk8
+      image: gradle:6-jdk8
       workingDir: "/workspace/output/$(inputs.params.CONTEXTDIR)"
       command: ["gradle"]
       args: ["$(inputs.params.GRADLEOPTS)"]
