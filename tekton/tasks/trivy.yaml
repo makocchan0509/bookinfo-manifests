@@ -6,8 +6,9 @@ metadata:
   labels:
     app.kubernetes.io/version: "0.1"
   annotations:
-    tekton.dev/pipelines.minVersion: "0.17.0"
-    tekton.dev/tags: security
+    tekton.dev/pipelines.minVersion: "0.21.0"
+    tekton.dev/categories: Security
+    tekton.dev/tags: Security
 spec:
   description: >-
     This Task scans Comprehensive Vulnerability using Trivy for Containers
@@ -19,7 +20,7 @@ spec:
     description: Reference of the image digest Trivy will scan.
   - name: TRIVY_IMAGE
     description: The location of the Trivy scan image.
-    default: aquasec/trivy:0.16.0
+    default: aquasec/trivy:0.19.2
   - name: TRIVY_USERNAME
     description: Authentication user name to get the target scan image.
     default: ""
@@ -40,7 +41,7 @@ spec:
     script: |
       SCAN_CONTAINER_IMAGE=$(params.IMAGE)@$(params.IMAGE_DIGEST)
       trivy --cache-dir=$(workspaces.cache.path)/trivy \
-        image --exit-code=0 --severity=HIGH,CRITICAL \
+        image --timeout 10m --exit-code=0 --severity=HIGH,CRITICAL \
         ${SCAN_CONTAINER_IMAGE}
   - name: severe-vulnerabilities
     image: $(params.TRIVY_IMAGE)
