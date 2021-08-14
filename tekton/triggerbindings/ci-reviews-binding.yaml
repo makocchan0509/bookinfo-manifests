@@ -1,7 +1,7 @@
 apiVersion: triggers.tekton.dev/v1beta1
 kind: TriggerBinding
 metadata:
-  name: build-deploy-reviews-binding
+  name: ci-reviews-binding
 spec:
   params:
   - name: TARGET-APP

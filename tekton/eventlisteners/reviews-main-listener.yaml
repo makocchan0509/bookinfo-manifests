@@ -1,11 +1,11 @@
 apiVersion: triggers.tekton.dev/v1beta1
 kind: EventListener
 metadata:
-  name: reviews-listener
+  name: reviews-main-listener
 spec:
   serviceAccountName: tekton-admin
   triggers:
-  - name: push-events-topic-branches
+  - name: push-events-main-branches
     interceptors:
       - ref:
           name: "gitlab"
@@ -18,6 +18,6 @@ spec:
         - name: "eventTypes"
           value: ["Push Hook"]
     template:
-      ref: build-deploy-bookinfo-template
+      ref: ci-bookinfo-template
     bindings:
-      - ref: build-deploy-reviews-binding
+      - ref: ci-reviews-binding
