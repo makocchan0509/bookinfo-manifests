@@ -7,7 +7,7 @@ commonLabels:
 namespace: stg
 
 images:
-- digest: sha256:c876c583a6c30311925174ef7cac2aeffed368bac19a9ef841ffaf931f599fc2
+- digest: sha256:e9655fddd37f87368b8afde9f20bdcfcce8043327610d596db5bca6eaddf2875
   name: ___IMAGE_URL___@___IMAGE_DIGEST___
   newName: registry.gitlab.com/cloudnative_impress/bookinfo/reviews
 
