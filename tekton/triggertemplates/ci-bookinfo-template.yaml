@@ -1,7 +1,7 @@
-apiVersion: triggers.tekton.dev/v1alpha1
+apiVersion: triggers.tekton.dev/v1beta1
 kind: TriggerTemplate
 metadata:
-  name: build-deploy-bookinfo-template
+  name: ci-bookinfo-template
 spec:
   params:
   - name: TARGET-APP
@@ -20,7 +20,7 @@ spec:
   - apiVersion: tekton.dev/v1beta1
     kind: PipelineRun
     metadata:
-      generateName: build-deploy-bookinfo-run-
+      generateName: ci-bookinfo-run-
     spec:
       serviceAccountName: tekton-admin
       params:
@@ -52,4 +52,4 @@ spec:
       - name: temp-dir
         emptyDir: {}
       pipelineRef:
-        name: build-deploy-reviews
+        name: ci-reviews

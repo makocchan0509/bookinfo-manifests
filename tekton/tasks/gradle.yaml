@@ -6,6 +6,8 @@ metadata:
     app.kubernetes.io/version: "0.1"
   annotations:
     tekton.dev/pipelines.minVersion: "0.12.1"
+    tekton.dev/categories: Build Tools
+    tekton.dev/tags: build-tool
     tekton.dev/displayName: "gradle"
 spec:
   description: >-
@@ -24,7 +26,7 @@ spec:
       default: reviews
   steps:
     - name: gradle-task
-      image: gradle:jdk8
+      image: gradle:6-jdk8
       workingDir: "/workspace/output/$(inputs.params.CONTEXTDIR)"
       command: ["gradle"]
       args: ["$(inputs.params.GRADLEOPTS)"]
