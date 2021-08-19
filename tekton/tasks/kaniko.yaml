@@ -3,10 +3,12 @@ kind: Task
 metadata:
   name: kaniko
   labels:
-    app.kubernetes.io/version: "0.3"
+    app.kubernetes.io/version: "0.4"
   annotations:
     tekton.dev/pipelines.minVersion: "0.17.0"
+    tekton.dev/categories: Image Build
     tekton.dev/tags: image-build
+    tekton.dev/displayName: "Build and upload container image using Kaniko"
 spec:
   description: >-
     This Task builds source into a container image using Google's kaniko tool.
@@ -26,7 +28,8 @@ spec:
     description: The build context used by Kaniko.
     default: ./
   - name: EXTRA_ARGS
-    default: ""
+    type: array
+    default: []
   - name: BUILDER_IMAGE
     description: The image on which builds will run (default is v1.5.1)
     default: gcr.io/kaniko-project/executor:v1.5.1@sha256:c6166717f7fe0b7da44908c986137ecfeab21f31ec3992f6e128fff8a94be8a5
@@ -46,7 +49,7 @@ spec:
     workingDir: $(workspaces.source.path)
     image: $(params.BUILDER_IMAGE)
     args:
-    - $(params.EXTRA_ARGS)
+    - $(params.EXTRA_ARGS[*])
     - --dockerfile=$(params.DOCKERFILE)
     - --context=$(workspaces.source.path)/$(params.CONTEXT)  # The user does not need to care the workspace and the source.
     - --destination=$(params.IMAGE)

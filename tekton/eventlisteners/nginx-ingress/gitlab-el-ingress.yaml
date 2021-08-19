@@ -7,10 +7,17 @@ spec:
   rules:
   - http:
       paths:
-        - path: /el/reviews
+        - path: /el/reviews/topic
           pathType: Prefix
           backend:
             service:
-              name: el-reviews-listener
+              name: el-reviews-topic-listener
+              port:
+                number: 8080
+        - path: /el/reviews/main
+          pathType: Prefix
+          backend:
+            service:
+              name: el-reviews-main-listener
               port:
                 number: 8080
