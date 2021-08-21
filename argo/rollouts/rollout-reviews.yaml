@@ -14,24 +14,24 @@ metadata:
   name: reviews
   namespace: prod
 spec:
-  replicas: 3
+  replicas: 5
   selector:
     matchLabels:
       app: reviews
       app.kubernetes.io/env: production
-      version: v2
+      app.kubernetes.io/managed-by: kustomize
   template:
     metadata:
       labels:
         app: reviews
         app.kubernetes.io/env: production
-        version: v2
+        app.kubernetes.io/managed-by: kustomize
     spec:
       containers:
       - env:
         - name: LOG_DIR
           value: /tmp/logs
-        image: registry.gitlab.com/cloudnative_impress/bookinfo/reviews@sha256:cbbb1b2b2328a97783d5e80275dbcf93202824e63c1bd5e99d769775a8cd5056
+        image: docker.io/istio/examples-bookinfo-reviews-v2:1.15.1
         imagePullPolicy: Always
         name: reviews
         ports:
