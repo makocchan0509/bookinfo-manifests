@@ -5,20 +5,18 @@
 You can learn the Kubernetes application lifecycle for containers through this tutorial.   
 The content is excellent for those who use [Tekton](https://tekton.dev/) and [Argo](https://argoproj.github.io/) to perform continuous integration and delivery.   
 
-See [BookInfo CI/CD Tutorial](https://cloudnative_impress.gitlab.io/bookinfo-tutorial/)
+See [BookInfo CI/CD Tutorial](https://cloudnative_impress.gitlab.io/bookinfo-tutorial/)   
 
 ## Repositories
 This tutorial consists of the following two Git repositories.   
 
-```
-The Application Repository (BookInfo)    
+**The Application Repository (BookInfo)**      
 [https://gitlab.com/cloudnative_impress/bookinfo](https://gitlab.com/cloudnative_impress/bookinfo)   
 
-The Manifests Repository (BookInfo Manifests)    
+**The Manifests Repository (BookInfo Manifests)**    
 [https://gitlab.com/cloudnative_impress/bookinfo-manifests](https://gitlab.com/cloudnative_impress/bookinfo-manifests)    
-```
 
-#### References    
+## References    
 This tutorial is also covered in the following book.   
 **[Kubernetes CI/CD Pipelines](https://www.amazon.co.jp/dp/4295012750)** (Amazon)
 
