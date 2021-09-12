@@ -11,7 +11,7 @@ spec:
       default: reviews/reviews-application
   steps:
     - name: gradle-build
-      image: gradle:jdk8
+      image: gradle:6-jdk8
       workingDir: "/workspace/output/$(inputs.params.contextDir)"
       command: ["gradle"]
       args: ["build"]
