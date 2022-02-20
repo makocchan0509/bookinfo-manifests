@@ -7,9 +7,9 @@ commonLabels:
 namespace: stg
 
 images:
-- digest: sha256:f0d510e9175b35f4d99f3707ac5888f3a3105e5e7cba1b33ec5e5fad18eff65b
+- digest: sha256:42e7ac441e45bd8574f55d028134847af17951516d31574538944eb865754770
   name: ___IMAGE_URL___@___IMAGE_DIGEST___
-  newName: registry.gitlab.com/cloudnative_impress/bookinfo/reviews
+  newName: ghcr.io/makocchan0509/bookinfo/reviews
 
 resources:
 - ../../base
