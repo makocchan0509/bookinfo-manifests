@@ -7,8 +7,8 @@ spec:
   - name: TARGET-APP
     value: reviews
   - name: GITLAB-PROJECT-PATH
-    value: $(body.project.path_with_namespace)
+    value: $(body.repository.full_name)
   - name: BOOKINFO-URL
-    value: $(body.repository.git_http_url)
+    value: $(body.repository.url)
   - name: BOOKINFO-REVISION
-    value: $(body.checkout_sha)
+    value: $(body.head_commit.id)

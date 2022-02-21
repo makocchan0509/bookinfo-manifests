@@ -12,6 +12,6 @@ spec:
         claimName: bookinfo-manifests
   params:
     - name: url
-      value: https://gitlab.com/___GITLAB_USER___/bookinfo-manifests.git
+      value: https://github.com/makocchan0509/bookinfo-manifests.git
     - name: revision
       value: main

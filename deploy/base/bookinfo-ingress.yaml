@@ -14,8 +14,7 @@ spec:
       port:
         number: 9080 
   rules:    
-  - host: test-bookinfo.example.com
-    http:
+  - http:
       paths:
       - path: /productpage
         pathType: ImplementationSpecific

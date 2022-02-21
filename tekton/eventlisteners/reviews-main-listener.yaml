@@ -8,15 +8,15 @@ spec:
   - name: push-events-main-branches
     interceptors:
       - ref:
-          name: "gitlab"
+          name: "github"
           kind: ClusterInterceptor
         params:
         - name: "secretRef"
           value:
-            secretName: gitlab-webhook-token
+            secretName: github-webhook-token
             secretKey: secretToken
         - name: "eventTypes"
-          value: ["Push Hook"]
+          value: ["pull_request"]
     template:
       ref: ci-bookinfo-template
     bindings:
