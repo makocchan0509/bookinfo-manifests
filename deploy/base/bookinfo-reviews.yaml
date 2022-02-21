@@ -65,7 +65,7 @@ spec:
       serviceAccountName: tekton-admin
       containers:
       - name: reviews
-        image: ___IMAGE_URL___@___IMAGE_DIGEST___
+        image: ghcr.io/makocchan0509/bookinfo/reviews:7fc8755e0b61a040e7cf89cc8eae0642de0686af
         imagePullPolicy: Always
         env:
         - name: LOG_DIR
