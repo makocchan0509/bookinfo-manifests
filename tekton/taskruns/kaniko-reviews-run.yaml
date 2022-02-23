@@ -3,16 +3,16 @@ kind: TaskRun
 metadata:
   generateName: kaniko-reviews-run-
 spec:
-  serviceAccountName: tekton-admin 
+  serviceAccountName: tekton-admin
   taskRef:
     name: kaniko
   params:
     - name: IMAGE
-      value: registry.gitlab.com/___GITLAB_USER___/bookinfo/reviews:$(context.taskRun.name)
+      value: ghcr.io/makocchan0509/bookinfo/reviews:$(context.taskRun.name)
     - name: CONTEXT
       value: ./reviews-wlpcfg
     - name: EXTRA_ARGS
-      value: ["--destination=registry.gitlab.com/___GITLAB_USER___/bookinfo/reviews:latest"]
+      value: ["--destination=ghcr.io/makocchan0509/bookinfo/reviews:latest"]
     - name: BUILDER_IMAGE
       ##  description: kaniko v1.3.0
       value: gcr.io/kaniko-project/executor@sha256:b9eec410fa32cd77cdb7685c70f86a96debb8b087e77e63d7fe37eaadb178709

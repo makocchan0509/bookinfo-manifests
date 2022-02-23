@@ -6,11 +6,11 @@ spec:
   serviceAccountName: tekton-admin
   params:
   - name: bookinfo-url
-    value: https://gitlab.com/___GITLAB_USER___/bookinfo.git
+    value: https://github.com/makocchan0509/bookinfo.git
   - name: bookinfo-revision
     value: main
   - name: bookinfo-manifests-url
-    value: https://gitlab.com/___GITLAB_USER___/bookinfo-manifests.git
+    value: https://github.com/makocchan0509/bookinfo-manifests.git
   - name: bookinfo-manifests-revision
     value: main
   workspaces:

@@ -50,6 +50,7 @@ spec:
     image: $(params.BUILDER_IMAGE)
     args:
     - $(params.EXTRA_ARGS[*])
+    - --force
     - --dockerfile=$(params.DOCKERFILE)
     - --context=$(workspaces.source.path)/$(params.CONTEXT)  # The user does not need to care the workspace and the source.
     - --destination=$(params.IMAGE)

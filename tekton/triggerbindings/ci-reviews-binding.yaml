@@ -7,12 +7,11 @@ spec:
   - name: TARGET-APP
     value: reviews
   - name: GITLAB-PROJECT-PATH
-    value: $(body.project.path_with_namespace)
+    value: $(body.repository.full_name)
   - name: BOOKINFO-URL
-    value: $(body.repository.git_http_url)
+    value: $(body.repository.clone_url)
   - name: BOOKINFO-REVISION
-    value: $(body.checkout_sha)
+    value: $(body.pull_request.head.sha)
   - name: BOOKINFO-USERNAME
-    value: $(body.user_username)
-  - name: BOOKINFO-EMAIL
-    value: $(body.user_email)
+    value: $(body.pull_request.user.login)
+
