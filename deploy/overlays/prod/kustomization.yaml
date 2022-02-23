@@ -8,7 +8,7 @@ namespace: prod
 
 images:
 - newTag: 7fc8755e0b61a040e7cf89cc8eae0642de0686af
-  name: ___IMAGE_URL___@___IMAGE_DIGEST___
+  name: ___IMAGE_URL___:___IMAGE_DIGEST___
   newName: ghcr.io/makocchan0509/bookinfo/reviews
 
 resources:
