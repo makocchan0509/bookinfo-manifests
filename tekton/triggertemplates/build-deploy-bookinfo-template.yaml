@@ -23,13 +23,13 @@ spec:
       - name: target-app
         value: $(tt.params.TARGET-APP)
       - name: imageurl
-        value: registry.gitlab.com/$(tt.params.GITLAB-PROJECT-PATH)
+        value: ghcr.io/$(tt.params.GITLAB-PROJECT-PATH)
       - name: bookinfo-url
         value: $(tt.params.BOOKINFO-URL)
       - name: bookinfo-revision
         value: $(tt.params.BOOKINFO-REVISION)
       - name: bookinfo-manifests-url
-        value: https://gitlab.com/$(tt.params.GITLAB-PROJECT-PATH)-manifests.git
+        value: https://github.com/$(tt.params.GITLAB-PROJECT-PATH)-manifests.git
       - name: bookinfo-manifests-revision
         value: main
       workspaces:

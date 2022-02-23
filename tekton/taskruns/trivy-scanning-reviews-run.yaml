@@ -8,9 +8,9 @@ spec:
     name: trivy
   params:
     - name: IMAGE
-      value: registry.gitlab.com/___GITLAB_USER___/bookinfo/reviews
+      value: ghcr.io/makocchan0509/bookinfo/reviews
     - name: IMAGE_DIGEST
-      value: ___IMAGE_DIGEST___
+      value: sha256:c8671b1c47191d2d1f9d8774a469176c882f472ebc8b5f646c1e29a3d716ec3f
   workspaces:
     - name: cache
       emptyDir: {}

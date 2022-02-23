@@ -5,7 +5,10 @@ metadata:
   name: bookinfo
   labels:
     app: productpage  
-    service: productpage    
+    service: productpage
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   # ingressClassName: gce
   defaultBackend:
@@ -13,9 +16,8 @@ spec:
       name: productpage
       port:
         number: 9080 
-  rules:    
-  - host: dev-bookinfo.example.com
-    http:
+  rules:
+  - http:
       paths:
       - path: /productpage
         pathType: ImplementationSpecific
