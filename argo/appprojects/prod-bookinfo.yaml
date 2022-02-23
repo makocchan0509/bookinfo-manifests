@@ -14,4 +14,4 @@ spec:
   - group: triggers.tekton.dev
     kind: '*'
   sourceRepos:
-  - https://gitlab.com/makocchan0509/bookinfo-manifests.git
+  - https://github.com/makocchan0509/bookinfo-manifests.git

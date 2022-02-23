@@ -14,7 +14,7 @@ spec:
   source:
     kustomize:
     path: deploy/overlays/prod
-    repoURL: https://gitlab.com/___GITLAB_USER___/bookinfo-manifests.git
+    repoURL: https://github.com/makocchan0509/bookinfo-manifests.git
     targetRevision: prod
   syncPolicy:
     automated:
